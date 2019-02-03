@@ -2,7 +2,7 @@
 
 - What is not working
   - S0ix state
-    Means power consumption is high on suspend (s2idle). But s2idle is working.
+    - Means power consumption is high on suspend (s2idle). But s2idle is working.
   - Cameras
   - dGPU
 
