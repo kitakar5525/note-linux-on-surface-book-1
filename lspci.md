@@ -1,4 +1,4 @@
-```bash
+```
 lspci -nn
 00:00.0 Host bridge [0600]: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers [8086:1904] (rev 08)
 00:02.0 VGA compatible controller [0300]: Intel Corporation Skylake GT2 [HD Graphics 520] [8086:1916] (rev 07)
@@ -23,7 +23,7 @@ lspci -nn
 03:00.0 Ethernet controller [0200]: Marvell Technology Group Ltd. 88W8897 [AVASTAR] 802.11ac Wireless [11ab:2b38]
 ```
 
-```bash
+```
 lspci -nnvt
 -[0000:00]-+-00.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers [8086:1904]
            +-02.0  Intel Corporation Skylake GT2 [HD Graphics 520] [8086:1916]
