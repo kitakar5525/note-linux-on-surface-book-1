@@ -1,4 +1,4 @@
-# note-linux-on-surface-devices
+# Notes of Linux on Surface devices
 Notes to use Linux on Surface devices (especially on Surface Book 1 and Surface 3)
 
 Device specific notes is here:
