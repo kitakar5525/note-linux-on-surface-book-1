@@ -25,6 +25,8 @@ Table of Contents
     - [Or apply patches to kernel](#or-apply-patches-to-kernel)
   - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
   - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
+  - [Disable power_saving on Wi-Fi for stability](#disable-power_saving-on-wi-fi-for-stability)
+    - [Or apply patch to kernel](#or-apply-patch-to-kernel)
   - [How to reach pc10 on power-on-idle](#how-to-reach-pc10-on-power-on-idle)
   - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
   - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
@@ -107,6 +109,26 @@ There are some patches to improve power consumption on s2idle:
 - i915.fastboot=1
 - i915.enable_guc=-1
 - nvme_core.default_ps_max_latency_us=170000
+
+## Disable power_saving on Wi-Fi for stability
+
+Edit `/etc/NetworkManager/NetworkManager.conf`
+```bash
+[connection]
+# Values are 0 (use default), 1 (ignore/don't touch), 2 (disable) or 3 (enable).
+# [NetworkManager Wi-Fi powersaving configuration](https://gist.github.com/jcberthon/ea8cfe278998968ba7c5a95344bc8b55)
+wifi.powersave = 2
+```
+
+or this (not persistent across reboots)
+```bash
+# wlp3s0 maybe different. Find it by `ip addr`
+sudo iw dev wlp3s0 set power_save off
+```
+
+### Or apply patch to kernel
+
+Apply wifi patch of jakeday repository
 
 ## How to reach pc10 on power-on-idle
 
