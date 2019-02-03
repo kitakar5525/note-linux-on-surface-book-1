@@ -19,10 +19,11 @@ Table of Contents
 <!-- TOC -->
 
 - [Notes of Linux on Surface Book 1 with Performance Base](#notes-of-linux-on-surface-book-1-with-performance-base)
-  - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
-  - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
-    - [Or apply patches to kernel](#or-apply-patches-to-kernel)
-  - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
+  - [Suspend (s2idle) issues](#suspend-s2idle-issues)
+    - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
+    - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
+      - [Or apply patches to kernel](#or-apply-patches-to-kernel)
+    - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
   - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
   - [Disable power_save on Wi-Fi for stability](#disable-power_save-on-wi-fi-for-stability)
     - [Or apply patch to kernel](#or-apply-patch-to-kernel)
@@ -35,7 +36,8 @@ Table of Contents
 
 <!-- /TOC -->
 
-## Observe suspend (s2idle) issue
+## Suspend (s2idle) issues
+### Observe suspend (s2idle) issue
 
 ```bash
 echo 1 > /sys/power/pm_debug_messages
@@ -52,7 +54,7 @@ nvme 0000:02:00.0: Refused to change power state, currently in D3
 
 then, go to next section.
 
-## resume from suspend (s2idle)
+### resume from suspend (s2idle)
 
 if you have TOSHIBA NVMe disk, you may need to disable D3 state of NVMe disk
 
@@ -72,7 +74,7 @@ echo 0 > "/sys/bus/pci/devices/0000:02:00.0/d3cold_allowed" # nvme
 echo 0 > "/sys/bus/pci/devices/0000:03:00.0/d3cold_allowed" # wifi
 ```
 
-### Or apply patches to kernel
+#### Or apply patches to kernel
 
 I found a similar issue on another NVMe disk:
 - [196907 – [Regression] s2idle does not work with PC300 NVMe SK hynix 512GB - Dell XPS 13 9360](https://bugzilla.kernel.org/show_bug.cgi?id=196907)
@@ -83,7 +85,7 @@ patches here:
 - [[v2,1/2] pci: prevent sk hynix nvme from entering D3 - Patchwork](https://lore.kernel.org/patchwork/patch/1007283/)
 - [[v2,2/2] nvme: add quirk to not call disable function when suspending - Patchwork](https://lore.kernel.org/patchwork/patch/1007284/)
 
-## Power comsumption on suspend (s2idle)
+### Power comsumption on suspend (s2idle)
 
 Documentation from Intel:
 - [How to achieve S0ix states in Linux* | 01.org](https://01.org/blogs/qwang59/2018/how-achieve-s0ix-states-linux)
