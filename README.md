@@ -1,13 +1,16 @@
 # Notes of Linux on Surface Book 1 with Performance Base
 Notes to use Linux on Surface Book 1 with Performance Base. Maybe also useful to other devices.
 
+- What is working IF you configure settings or apply patch(es)
+  - suspend (s2idle): see [Suspend (s2idle) issues](#suspend-s2idle-issues)
+
 - What is working IF you apply patch(es) to kernel
   - From jakeday [repository](https://github.com/jakeday/linux-surface), at least you need following patch(es):
     - IPTS patch: for touch input like touchscreen and pen.
 
-- What is NOT working on this device:
+- What is NOT working
   - S0ix state
-    - Means power consumption is high on suspend (s2idle). But s2idle is working.
+    - Means power consumption is high on suspend (s2idle).
   - Cameras
   - dGPU
   - Touch input (IPTS) sometimes crashes
