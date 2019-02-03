@@ -1,6 +1,11 @@
 # note-linux-on-surface-devices
 Notes to use Linux on Surface devices (especially on Surface Book 1 and Surface 3)
 
+Device specific notes is here:
+- [Surface Book with Performance Base specific](/Surface-Book-with-Performance-Base-specific.md)
+- [Surface 3 specific](/Surface-3-specific.md)
+
+Table of Contents
 <!-- TOC -->
 
 - [note-linux-on-surface-devices](#note-linux-on-surface-devices)
