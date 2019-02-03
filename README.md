@@ -226,7 +226,7 @@ find: ‘/run/user/1000/gvfs’: Permission denied
 You can find which is which:
 
 ```bash
-/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW0040:00/
+cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW0040:00/path
 \_SB_.PCI0.LPCB.EC0_.VGBI
 ```
 
