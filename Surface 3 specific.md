@@ -9,7 +9,7 @@
 
 - What is working now which was not before
   - S0ix state
-    We can now go into S0ix after kernel 4.20 !
+    - We can now go into S0ix after kernel 4.20 !
     ```bash
     /sys/devices/system/cpu/cpuidle/low_power_idle_cpu_residency_us
     30
