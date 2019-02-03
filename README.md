@@ -110,6 +110,8 @@ There are some patches to improve power consumption on s2idle:
 - i915.enable_guc=-1
 - nvme_core.default_ps_max_latency_us=170000
 
+You can see parameters value of a module by: `sudo systool -m i915 -v`. Parameters explanations: `modinfo i915`. For non-modules: `tail /sys/module/nvme_core/parameters/*`.
+
 ## Disable power_save on Wi-Fi for stability
 
 Edit `/etc/NetworkManager/NetworkManager.conf`
