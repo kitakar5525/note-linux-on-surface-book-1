@@ -18,6 +18,7 @@ Table of Contents
   - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
     - [Or apply patches to kernel](#or-apply-patches-to-kernel)
   - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
+  - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
   - [Marvell wifi remove and pc10 on power-on-idle](#marvell-wifi-remove-and-pc10-on-power-on-idle)
   - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
   - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
@@ -93,6 +94,13 @@ There are some patches to improve power consumption on s2idle:
 - from [201579 – HP Elite x2 1013 G3 unable to enter S0ix](https://bugzilla.kernel.org/show_bug.cgi?id=201579)
 	- [[1/1] ipu3-cio2: Allow probe to succeed if there are no sensors connected - Patchwork](https://patchwork.kernel.org/patch/10714257/)
 	- [x86 platform driver layer - Patchwork](https://patchwork.kernel.org/project/platform-driver-x86/list/?series=74547)
+
+## Kernel parameters I pass to bootloader
+
+- i915.enable_psr=1
+- i915.fastboot=1
+- i915.enable_guc=-1
+- nvme_core.default_ps_max_latency_us=170000
 
 ## Marvell wifi remove and pc10 on power-on-idle
 
