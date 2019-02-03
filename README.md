@@ -1,7 +1,5 @@
 # Notes of Linux on Surface Book 1 with Performance Base
-Notes to use Linux on Surface Book 1 with Performance Base (and Surface 3). Maybe also useful to other devices.
-
-Surface 3 specific notes is here: [Surface 3 specific](/Surface-3-specific.md)
+Notes to use Linux on Surface Book 1 with Performance Base. Maybe also useful to other devices.
 
 - What is working IF you apply patch(es) to kernel
   - From jakeday [repository](https://github.com/jakeday/linux-surface), at least you need following patch(es):
