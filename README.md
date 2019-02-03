@@ -68,7 +68,7 @@ There are some patches to improve power consumption on s2idle:
 	- [[1/1] ipu3-cio2: Allow probe to succeed if there are no sensors connected - Patchwork](https://patchwork.kernel.org/patch/10714257/)
 	- [x86 platform driver layer - Patchwork](https://patchwork.kernel.org/project/platform-driver-x86/list/?series=74547)
 
-## Marvell wifi remove and rescan and pc10 on power-on-idle
+## Marvell wifi remove and pc10 on power-on-idle
 
 - 4.20.1-arch1-1-surface
 
