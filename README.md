@@ -18,7 +18,7 @@ nvme 0000:02:00.0: Refused to change power state, currently in D3
 
 then, go to next section.
 
-## resume from suspend (s2idle) (SB1 with Performance Base)
+## resume from suspend (s2idle)
 
 if you have TOSHIBA NVMe disk, you may need to disable D3 state of NVMe disk
 
