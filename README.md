@@ -3,10 +3,11 @@ Notes to use Linux on Surface Book 1 with Performance Base (and Surface 3). Mayb
 
 Surface 3 specific notes is here: [Surface 3 specific](/Surface-3-specific.md)
 
-- From jakeday [repository](https://github.com/jakeday/linux-surface), at least you need following patch(es):
-  - IPTS patch: for touch input like touchscreen and pen.
+- What is working IF you apply patch(es) to kernel
+  - From jakeday [repository](https://github.com/jakeday/linux-surface), at least you need following patch(es):
+    - IPTS patch: for touch input like touchscreen and pen.
 
-- What is not working on this device:
+- What is NOT working on this device:
   - S0ix state
     - Means power consumption is high on suspend (s2idle). But s2idle is working.
   - Cameras
