@@ -19,7 +19,7 @@ Table of Contents
     - [Or apply patches to kernel](#or-apply-patches-to-kernel)
   - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
   - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
-  - [Marvell wifi remove and pc10 on power-on-idle](#marvell-wifi-remove-and-pc10-on-power-on-idle)
+  - [How to reach pc10 on power-on-idle](#how-to-reach-pc10-on-power-on-idle)
   - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
   - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
   - [wakeups](#wakeups)
@@ -102,7 +102,7 @@ There are some patches to improve power consumption on s2idle:
 - i915.enable_guc=-1
 - nvme_core.default_ps_max_latency_us=170000
 
-## Marvell wifi remove and pc10 on power-on-idle
+## How to reach pc10 on power-on-idle
 
 - 4.20.1-arch1-1-surface
 
