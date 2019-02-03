@@ -13,7 +13,7 @@ Surface 3 specific notes is here: [Surface 3 specific](/Surface-3-specific.md)
   - dGPU
   - Touch input (IPTS) sometimes crashes
     - But now the frequency is very low thanks to this [commit](https://github.com/jakeday/linux-surface/commit/1143fcaa6b40e6bd53adba8556789155572ef4fb#diff-42d706f8ccc685dafed2052309affbd7) in jakeday repository.
-  - WIFI power_saving
+  - Wi-Fi power_saving
     - We need to disable power_saving for stability for now. If we disable power_saving, the stability is enough for daily usage. Disabling power_saving is included in wifi patch of jakeday repository.
 
 Table of Contents
@@ -64,7 +64,7 @@ Model Number:                       THNSN5512GPU7 TOSHIBA
 Firmware Version:                   57MS4109
 ```
 
-then, disable D3 state of NVMe and WIFI
+then, disable D3 state of NVMe and Wi-Fi
 
 ```bash
 echo 0 > "/sys/bus/pci/devices/0000:02:00.0/d3cold_allowed" # nvme
@@ -113,17 +113,17 @@ There are some patches to improve power consumption on s2idle:
 - 4.20.1-arch1-1-surface
 
 ```bash
-# stop WIFI and Bluetooth
+# stop Wi-Fi and Bluetooth
 rfkill block wlan
 rfkill block bluetooth
 
-# remove WIFI
+# remove Wi-Fi
 sudo su -c "echo 1 > "/sys/bus/pci/devices/0000:03:00.0/remove""
 ```
 
 to reach `Pk%pc10` and `CPU%LPI` on power-on-idle. You can watch residency with `sudo turbostat`
 
-You can rescan PCI devices to use WIFI again:
+You can rescan PCI devices to use Wi-Fi again:
 ```bash
 sudo su -c "echo 1 > /sys/bus/pci/rescan"
 
