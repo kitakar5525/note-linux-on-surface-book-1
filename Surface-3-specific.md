@@ -2,7 +2,7 @@
 
 - What is not working
   - Cameras
-  - Touchscreen crashes after s2idle
+  - Touch input crashes after s2idle
     ```bash
     kern  :err   : [  +0.203408] Surface3-spi spi-MSHW0037:00: SPI transfer timed out
     ```
