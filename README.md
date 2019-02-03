@@ -1,6 +1,20 @@
 # note-linux-on-surface-devices
 Notes to use Linux on Surface devices (especially on Surface Book 1 and Surface 3)
 
+<!-- TOC -->
+
+- [note-linux-on-surface-devices](#note-linux-on-surface-devices)
+  - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
+  - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
+    - [Or apply patches to kernel](#or-apply-patches-to-kernel)
+  - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
+  - [Marvell wifi remove and pc10 on power-on-idle](#marvell-wifi-remove-and-pc10-on-power-on-idle)
+  - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
+  - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
+  - [wakeups](#wakeups)
+
+<!-- /TOC -->
+
 ## Observe suspend (s2idle) issue
 
 ```bash
