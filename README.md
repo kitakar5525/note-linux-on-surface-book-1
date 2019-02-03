@@ -1,14 +1,19 @@
-# Notes of Linux on Surface devices
-Notes to use Linux on Surface devices (especially on Surface Book 1 and Surface 3)
+# Notes of Linux on Surface Book 1 with Performance Base
+Notes to use Linux on Surface Book 1 with Performance Base (and Surface 3). Maybe also useful to other devices.
 
-Device specific notes is here:
-- [Surface Book with Performance Base specific](/Surface-Book-with-Performance-Base-specific.md)
+Surface 3 specific notes is here:
 - [Surface 3 specific](/Surface-3-specific.md)
+
+- What is not working on this device:
+  - S0ix state
+    - Means power consumption is high on suspend (s2idle). But s2idle is working.
+  - Cameras
+  - dGPU
 
 Table of Contents
 <!-- TOC -->
 
-- [note-linux-on-surface-devices](#note-linux-on-surface-devices)
+- [Notes of Linux on Surface Book 1 with Performance Base](#notes-of-linux-on-surface-book-1-with-performance-base)
   - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
   - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
     - [Or apply patches to kernel](#or-apply-patches-to-kernel)
@@ -247,4 +252,30 @@ You can find which is which:
 ```bash
 cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW0040:00/path
 \_SB_.PCI0.LPCB.EC0_.VGBI
+```
+
+## dGPU not working
+
+Issue tracked here:
+- [[SB w Performance Base] `lspci` doesn't show Nvidia 965M graphics card · Issue #286 · jakeday/linux-surface](https://github.com/jakeday/linux-surface/issues/286)
+
+### \_SB_.PCI0.I2C0.SAM_
+
+```bash
+tail /sys/bus/i2c/devices/i2c-MSHW0030:00/firmware_node/path
+\_SB_.PCI0.I2C0.SAM_
+```
+
+- `/sys/bus/i2c/devices/i2c-5/i2c-MSHW0030:00/`
+- `sudo modprobe i2c-dev`
+
+- [mkottman/acpi_call: A linux kernel module that enables calls to ACPI methods through /proc/acpi/call. Now with support for Integer, String and Buffer parameters.](https://github.com/mkottman/acpi_call)
+```bash
+echo '\_SB.PCI0.RP05.HGON' > /proc/acpi/call
+kern  :warn  : [ +42.597418] i2c i2c-5: protocol 0x0e not supported for client 0x28
+kern  :err   : [  +0.000006] ACPI Exception: AE_BAD_PARAMETER, Returned by Handler for [GenericSerialBus] (20170728/evregion-300)
+kern  :err   : [  +0.000020] ACPI Error: Result stack is empty! State=ffff88d4a417d400 (20170728/dswstate-99)
+kern  :err   : [  +0.000018] ACPI Error: Method parse/execution failed \_SB.PCI0.I2C0.SAM.SCMD, AE_BAD_PARAMETER (20170728/psparse-550)
+kern  :err   : [  +0.000015] ACPI Error: Method parse/execution failed \_SB.PCI0.RP05.HGON, AE_BAD_PARAMETER (20170728/psparse-550)
+kern  :err   : [  +0.000017] acpi_call: Method call failed: Error: AE_BAD_PARAMETER
 ```
