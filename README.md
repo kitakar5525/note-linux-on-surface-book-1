@@ -22,6 +22,8 @@ Table of Contents
   - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
   - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
   - [wakeups](#wakeups)
+  - [dGPU not working](#dgpu-not-working)
+    - [\_SB_.PCI0.I2C0.SAM_](#\_sb_pci0i2c0sam_)
 
 <!-- /TOC -->
 
