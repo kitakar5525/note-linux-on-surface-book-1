@@ -13,8 +13,8 @@ Surface 3 specific notes is here: [Surface 3 specific](/Surface-3-specific.md)
   - dGPU
   - Touch input (IPTS) sometimes crashes
     - But now the frequency is very low thanks to this [commit](https://github.com/jakeday/linux-surface/commit/1143fcaa6b40e6bd53adba8556789155572ef4fb#diff-42d706f8ccc685dafed2052309affbd7) in jakeday repository.
-  - Wi-Fi power_saving
-    - We need to disable power_saving for stability for now. If we disable power_saving, the stability is enough for daily usage. Disabling power_saving is included in wifi patch of jakeday repository.
+  - Wi-Fi power_save
+    - We need to disable power_save for stability for now. If we disable power_save, the stability is enough for daily usage. Disabling power_save is included in wifi patch of jakeday repository.
 
 Table of Contents
 <!-- TOC -->
@@ -25,7 +25,7 @@ Table of Contents
     - [Or apply patches to kernel](#or-apply-patches-to-kernel)
   - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
   - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
-  - [Disable power_saving on Wi-Fi for stability](#disable-power_saving-on-wi-fi-for-stability)
+  - [Disable power_save on Wi-Fi for stability](#disable-power_save-on-wi-fi-for-stability)
     - [Or apply patch to kernel](#or-apply-patch-to-kernel)
   - [How to reach pc10 on power-on-idle](#how-to-reach-pc10-on-power-on-idle)
   - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
@@ -110,7 +110,7 @@ There are some patches to improve power consumption on s2idle:
 - i915.enable_guc=-1
 - nvme_core.default_ps_max_latency_us=170000
 
-## Disable power_saving on Wi-Fi for stability
+## Disable power_save on Wi-Fi for stability
 
 Edit `/etc/NetworkManager/NetworkManager.conf`
 ```bash
