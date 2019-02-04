@@ -13757,7 +13757,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
 
     Scope (_SB)
     {
-        Name (HDAA, Zero)
+        Name (HDAA, Zero)               // HDA codecs audio functions bridge driver
         Name (DISA, One)
         Method (DION, 0, NotSerialized)
         {
