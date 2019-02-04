@@ -5319,23 +5319,18 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
             CPSC,   1
         }
 
-        //
-        // PWRM register definitions
-        //
-        // - [[10/10] platform/x86: intel_pmc_core: Quirk to ignore XTAL shutdown - Patchwork](https://patchwork.kernel.org/patch/10791883/)
-        // - [edk2-platforms/Pch.asl at devel-MinPlatform · tianocore/edk2-platforms](https://github.com/tianocore/edk2-platforms/blob/9a0a7a2ff0a57c5a8747f7cca7881a3e129028f8/Silicon/Intel/KabylakeSiliconPkg/Pch/AcpiTables/Dsdt/Pch.asl#L281)
         OperationRegion (PWMR, SystemMemory, PWRM, 0x0800)
         Field (PWMR, AnyAcc, NoLock, Preserve)
         {
             Offset (0xE0), 
             Offset (0xE2), 
-            DWLE,   1,                  // Deep-Sx WLAN Phy Power Enable
-            HWLE,   1,                  // Host Wireless LAN Phy Power Enable
+            DWLE,   1, 
+            HWLE,   1, 
             Offset (0x31C), 
                 ,   13, 
-            SLS0,   1,                      // SLP_S0# Low Voltage Mode Enable (SLPS0LVEN)
+            SLS0,   1, 
                 ,   8, 
-            XSQD,   1                   // 24MHz Crystal Shutdown Qualification Disable (XTALSDQDIS)
+            XSQD,   1
         }
 
         OperationRegion (PMST, SystemMemory, PWRM, 0x80)
