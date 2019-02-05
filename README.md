@@ -22,20 +22,22 @@ Table of Contents
 <!-- TOC -->
 
 - [Notes of Linux on Surface Book 1 with Performance Base](#notes-of-linux-on-surface-book-1-with-performance-base)
-  - [Suspend (s2idle) issues](#suspend-s2idle-issues)
-    - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
-    - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
-      - [Or apply patches to kernel](#or-apply-patches-to-kernel)
-    - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
-  - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
-  - [Disable power_save on Wi-Fi for stability](#disable-power_save-on-wi-fi-for-stability)
-    - [Or apply patch to kernel](#or-apply-patch-to-kernel)
-  - [How to reach pc10 on power-on-idle](#how-to-reach-pc10-on-power-on-idle)
-  - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
-  - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
-  - [wakeups](#wakeups)
-  - [dGPU not working](#dgpu-not-working)
-    - [\_SB_.PCI0.I2C0.SAM_](#\_sb_pci0i2c0sam_)
+    - [Suspend (s2idle) issues](#suspend-s2idle-issues)
+        - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
+        - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
+            - [Or apply patches to kernel](#or-apply-patches-to-kernel)
+        - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
+    - [Wi-Fi issues](#wi-fi-issues)
+        - [Disable Wi-Fi power_save for stability](#disable-wi-fi-power_save-for-stability)
+            - [Or apply patch to kernel](#or-apply-patch-to-kernel)
+        - [Reset Wi-Fi in case of Wi-Fi crashing or malfunctioning](#reset-wi-fi-in-case-of-wi-fi-crashing-or-malfunctioning)
+    - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
+    - [How to reach pc10 on power-on-idle](#how-to-reach-pc10-on-power-on-idle)
+    - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
+    - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
+    - [wakeups](#wakeups)
+    - [dGPU not working](#dgpu-not-working)
+        - [\_SB_.PCI0.I2C0.SAM_](#\_sb_pci0i2c0sam_)
 
 <!-- /TOC -->
 
@@ -107,16 +109,8 @@ There are some patches to improve power consumption on s2idle:
 	- [[1/1] ipu3-cio2: Allow probe to succeed if there are no sensors connected - Patchwork](https://patchwork.kernel.org/patch/10714257/)
 	- [x86 platform driver layer - Patchwork](https://patchwork.kernel.org/project/platform-driver-x86/list/?series=74547)
 
-## Kernel parameters I pass to bootloader
-
-- i915.enable_psr=1
-- i915.fastboot=1
-- i915.enable_guc=-1
-- nvme_core.default_ps_max_latency_us=170000
-
-You can see parameters value of a module by: `sudo systool -m i915 -v`. Parameters explanations: `modinfo i915`. For non-modules: `tail /sys/module/nvme_core/parameters/*`.
-
-## Disable power_save on Wi-Fi for stability
+## Wi-Fi issues
+### Disable Wi-Fi power_save for stability
 
 Edit `/etc/NetworkManager/NetworkManager.conf`
 ```bash
@@ -132,9 +126,34 @@ or this (not persistent across reboots)
 sudo iw dev wlp3s0 set power_save off
 ```
 
-### Or apply patch to kernel
+#### Or apply patch to kernel
 
 Apply wifi patch of jakeday repository
+
+### Reset Wi-Fi in case of Wi-Fi crashing or malfunctioning
+
+It is stable enough if you apply wifi patch from jakeday repo. But in case of Wi-Fi crashing or malfunctioning, you can reset Wi-Fi.
+
+`RP12` can be differ if you use another Surface device. [Disassemble](https://wiki.archlinux.org/index.php/DSDT#Recompiling_it_yourself) your DSDT table and try to search `_RST` first.
+
+- Requires [acpi_call](https://github.com/mkottman/acpi_call)
+
+```bash
+echo '\_SB.PCI0.RP12.PXSX.PRWF._RST' > /proc/acpi/call
+echo 1 > "/sys/bus/pci/devices/0000:00:1d.3/remove"
+echo 1 > /sys/bus/pci/rescan
+```
+
+It seems that once we issue `echo '\_SB.PCI0.RP12.PXSX.PRWF._OFF' > /proc/acpi/call`, then we cannot wakeup wifi again.
+
+## Kernel parameters I pass to bootloader
+
+- i915.enable_psr=1
+- i915.fastboot=1
+- i915.enable_guc=-1
+- nvme_core.default_ps_max_latency_us=170000
+
+You can see parameters value of a module by: `sudo systool -m i915 -v`. Parameters explanations: `modinfo i915`. For non-modules: `tail /sys/module/nvme_core/parameters/*`.
 
 ## How to reach pc10 on power-on-idle
 
