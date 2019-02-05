@@ -31,11 +31,12 @@ Table of Contents
         - [Disable Wi-Fi power_save for stability](#disable-wi-fi-power_save-for-stability)
             - [Or apply patch to kernel](#or-apply-patch-to-kernel)
         - [Reset Wi-Fi in case of Wi-Fi crashing or malfunctioning](#reset-wi-fi-in-case-of-wi-fi-crashing-or-malfunctioning)
-    - [Kernel parameters I pass to bootloader](#kernel-parameters-i-pass-to-bootloader)
+    - [Settings](#settings)
+        - [Kernel parameters](#kernel-parameters)
+        - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
+        - [wakeups](#wakeups)
     - [How to reach pc10 on power-on-idle](#how-to-reach-pc10-on-power-on-idle)
-    - [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep)
     - [/sys/module, useful to debug](#sysmodule-useful-to-debug)
-    - [wakeups](#wakeups)
     - [dGPU not working](#dgpu-not-working)
         - [\_SB_.PCI0.I2C0.SAM_](#\_sb_pci0i2c0sam_)
 
@@ -146,7 +147,9 @@ echo 1 > /sys/bus/pci/rescan
 
 It seems that once we issue `echo '\_SB.PCI0.RP12.PXSX.PRWF._OFF' > /proc/acpi/call`, then we cannot wakeup wifi again.
 
-## Kernel parameters I pass to bootloader
+## Settings
+
+### Kernel parameters
 
 - i915.enable_psr=1
 - i915.fastboot=1
@@ -155,31 +158,7 @@ It seems that once we issue `echo '\_SB.PCI0.RP12.PXSX.PRWF._OFF' > /proc/acpi/c
 
 You can see parameters value of a module by: `sudo systool -m i915 -v`. Parameters explanations: `modinfo i915`. For non-modules: `tail /sys/module/nvme_core/parameters/*`.
 
-## How to reach pc10 on power-on-idle
-
-- 4.20.1-arch1-1-surface
-
-```bash
-# stop Wi-Fi and Bluetooth
-rfkill block wlan
-rfkill block bluetooth
-
-# remove Wi-Fi
-sudo su -c "echo 1 > "/sys/bus/pci/devices/0000:03:00.0/remove""
-```
-
-to reach `Pk%pc10` and `CPU%LPI` on power-on-idle. You can watch residency with `sudo turbostat`
-
-You can rescan PCI devices to use Wi-Fi again:
-```bash
-sudo su -c "echo 1 > /sys/bus/pci/rescan"
-
-# then
-rfkill unblock wlan
-rfkill unblock bluetooth
-```
-
-## /usr/lib/systemd/system-sleep/sleep
+### /usr/lib/systemd/system-sleep/sleep
 
 ```bash
 #!/bin/sh
@@ -207,77 +186,14 @@ case $1/$2 in
 esac
 ```
 
-## /sys/module, useful to debug
-
-```bash
-echo 1 > /sys/module/printk/parameters/ignore_loglevel
-echo 0 > /sys/module/printk/parameters/console_suspend
-
-echo 0xFFFFFFFF > /sys/module/acpi/parameters/debug_layer
-echo 0x00000002 > /sys/module/acpi/parameters/debug_level
-
-echo 170000 > /sys/module/nvme_core/parameters/default_ps_max_latency_us
-echo 1 > /sys/module/acpi/parameters/ec_no_wakeup
-echo 0x02 > /sys/module/drm/parameters/debug
-
-# read-only
-cat /sys/module/acpiphp/parameters/disable
-cat /sys/module/i915/parameters/disable_power_well
-cat /sys/module/i915/parameters/enable_dc
-```
-
-## wakeups
+### wakeups
 
 Configure which device to allow wakeup from suspend.
 
 ```bash
 sudo find / -name wakeup
 /sys/kernel/irq/136/wakeup
-/sys/kernel/irq/17/wakeup
-/sys/kernel/irq/126/wakeup
-/sys/kernel/irq/7/wakeup
-/sys/kernel/irq/144/wakeup
-/sys/kernel/irq/134/wakeup
-/sys/kernel/irq/15/wakeup
-/sys/kernel/irq/124/wakeup
-/sys/kernel/irq/5/wakeup
-/sys/kernel/irq/142/wakeup
-/sys/kernel/irq/132/wakeup
-/sys/kernel/irq/13/wakeup
-/sys/kernel/irq/122/wakeup
-/sys/kernel/irq/3/wakeup
-/sys/kernel/irq/140/wakeup
-/sys/kernel/irq/130/wakeup
-/sys/kernel/irq/11/wakeup
-/sys/kernel/irq/120/wakeup
-/sys/kernel/irq/1/wakeup
-/sys/kernel/irq/139/wakeup
-/sys/kernel/irq/86/wakeup
-/sys/kernel/irq/129/wakeup
-/sys/kernel/irq/137/wakeup
-/sys/kernel/irq/18/wakeup
-/sys/kernel/irq/127/wakeup
-/sys/kernel/irq/8/wakeup
-/sys/kernel/irq/145/wakeup
-/sys/kernel/irq/135/wakeup
-/sys/kernel/irq/16/wakeup
-/sys/kernel/irq/125/wakeup
-/sys/kernel/irq/6/wakeup
-/sys/kernel/irq/143/wakeup
-/sys/kernel/irq/133/wakeup
-/sys/kernel/irq/14/wakeup
-/sys/kernel/irq/123/wakeup
-/sys/kernel/irq/4/wakeup
-/sys/kernel/irq/141/wakeup
-/sys/kernel/irq/131/wakeup
-/sys/kernel/irq/12/wakeup
-/sys/kernel/irq/121/wakeup
-/sys/kernel/irq/2/wakeup
-/sys/kernel/irq/10/wakeup
-/sys/kernel/irq/0/wakeup
-/sys/kernel/irq/138/wakeup
-/sys/kernel/irq/19/wakeup
-/sys/kernel/irq/128/wakeup
+[...]
 /sys/kernel/irq/9/wakeup
 /sys/kernel/debug/tracing/events/ftrace/wakeup
 /sys/devices/pnp0/00:03/power/wakeup # required for rtcwake
@@ -315,6 +231,49 @@ You can find which is which:
 ```bash
 cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW0040:00/path
 \_SB_.PCI0.LPCB.EC0_.VGBI
+```
+
+## How to reach pc10 on power-on-idle
+
+- 4.20.1-arch1-1-surface
+
+```bash
+# stop Wi-Fi and Bluetooth
+rfkill block wlan
+rfkill block bluetooth
+
+# remove Wi-Fi
+sudo su -c "echo 1 > "/sys/bus/pci/devices/0000:03:00.0/remove""
+```
+
+to reach `Pk%pc10` and `CPU%LPI` on power-on-idle. You can watch residency with `sudo turbostat`
+
+You can rescan PCI devices to use Wi-Fi again:
+```bash
+sudo su -c "echo 1 > /sys/bus/pci/rescan"
+
+# then
+rfkill unblock wlan
+rfkill unblock bluetooth
+```
+
+## /sys/module, useful to debug
+
+```bash
+echo 1 > /sys/module/printk/parameters/ignore_loglevel
+echo 0 > /sys/module/printk/parameters/console_suspend
+
+echo 0xFFFFFFFF > /sys/module/acpi/parameters/debug_layer
+echo 0x00000002 > /sys/module/acpi/parameters/debug_level
+
+echo 170000 > /sys/module/nvme_core/parameters/default_ps_max_latency_us
+echo 1 > /sys/module/acpi/parameters/ec_no_wakeup
+echo 0x02 > /sys/module/drm/parameters/debug
+
+# read-only
+cat /sys/module/acpiphp/parameters/disable
+cat /sys/module/i915/parameters/disable_power_well
+cat /sys/module/i915/parameters/enable_dc
 ```
 
 ## dGPU not working
