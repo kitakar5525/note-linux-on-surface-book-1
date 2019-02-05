@@ -134,7 +134,7 @@ Apply wifi patch of jakeday repository
 
 It is stable enough if you apply wifi patch from jakeday repo. But in case of Wi-Fi crashing or malfunctioning, you can reset Wi-Fi.
 
-`RP12` can be differ if you use another Surface device. [Disassemble](https://wiki.archlinux.org/index.php/DSDT#Recompiling_it_yourself) your DSDT table and try to search `_RST` first.
+`RP12` can differ if you use another Surface device. [Disassemble](https://wiki.archlinux.org/index.php/DSDT#Recompiling_it_yourself) your DSDT table and try to search `_RST` first.
 
 - Requires [acpi_call](https://github.com/mkottman/acpi_call)
 
