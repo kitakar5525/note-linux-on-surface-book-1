@@ -26,6 +26,7 @@ Table of Contents
         - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
         - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
             - [Or apply patches to kernel](#or-apply-patches-to-kernel)
+            - [Memo: What I tried for NVMe which did not work](#memo-what-i-tried-for-nvme-which-did-not-work)
         - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
     - [Wi-Fi issues](#wi-fi-issues)
         - [Disable Wi-Fi power_save for stability](#disable-wi-fi-power_save-for-stability)
@@ -90,6 +91,16 @@ patches here:
 
 - [[v2,1/2] pci: prevent sk hynix nvme from entering D3 - Patchwork](https://lore.kernel.org/patchwork/patch/1007283/)
 - [[v2,2/2] nvme: add quirk to not call disable function when suspending - Patchwork](https://lore.kernel.org/patchwork/patch/1007284/)
+
+#### Memo: What I tried for NVMe which did not work
+
+- disabling Runtime PM for NVMe disk
+    `echo "on" > "/sys/devices/pci0000:00/0000:00:1d.0/0000:02:00.0/power/control"`
+- disabling APST
+    set `nvme_core.default_ps_max_latency_us=0` to bootloader
+    or `NVME_QUIRK_NO_APST`
+- `NVME_QUIRK_DELAY_BEFORE_CHK_RDY`
+- `NVME_QUIRK_NO_DEEPEST_PS`
 
 ### Power comsumption on suspend (s2idle)
 
