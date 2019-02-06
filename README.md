@@ -94,11 +94,10 @@ patches here:
 
 #### Memo: What I tried for NVMe which did not work
 
-- disabling Runtime PM for NVMe disk
-    `echo "on" > "/sys/devices/pci0000:00/0000:00:1d.0/0000:02:00.0/power/control"`
+- disabling Runtime PM for NVMe disk: `echo "on" > "/sys/devices/pci0000:00/0000:00:1d.0/0000:02:00.0/power/control"`
 - disabling APST
-    set `nvme_core.default_ps_max_latency_us=0` to bootloader
-    or `NVME_QUIRK_NO_APST`
+    - set `nvme_core.default_ps_max_latency_us=0` to bootloader, or
+    - `NVME_QUIRK_NO_APST`
 - `NVME_QUIRK_DELAY_BEFORE_CHK_RDY`
 - `NVME_QUIRK_NO_DEEPEST_PS`
 
