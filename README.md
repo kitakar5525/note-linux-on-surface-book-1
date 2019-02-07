@@ -259,7 +259,7 @@ echo disabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/1-6/power/wakeup" # B
 Disable wakeup from LID open or close (for me, lid close also wakes up my device😢, so I disable it):
 
 ```bash
-echo enable > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
+echo disable > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
 ```
 
 ## How to reach pc10 on power-on-idle
