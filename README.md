@@ -198,9 +198,9 @@ esac
 
 ### wakeups
 
-Configure which device to allow wakeup from suspend.
+Configure which wakeup source to allow wakeup from suspend.
 
-For some reasons we cannot enable or disable wakeup from a devices like lid, keyboard and bluetooth from [/proc/acpi/wakeup](/proc_acpi_wakeup.md).
+For some reasons we cannot enable or disable wakeup from peripheral devices like lid, keyboard or bluetooth from [/proc/acpi/wakeup](/proc_acpi_wakeup.md).
 
 ```bash
 sudo find / -name wakeup
@@ -245,10 +245,10 @@ cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW004
 \_SB_.PCI0.LPCB.EC0_.VGBI
 ```
 
-For example, you can disable wakeup from LID open or close (for me, lid close also wakes up my device😢, so I disable it):
+For example, you can disable wakeup from XHC, which sometimes wakes up my Surface unintentionally:
 
 ```bash
-echo disabled > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
+echo disabled > "/sys/devices/pci0000:00/0000:00:14.0/power/wakeup" # XHC
 ```
 
 You can find which device is enabled for wakeup:
