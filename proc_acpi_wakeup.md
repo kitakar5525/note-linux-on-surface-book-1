@@ -1,3 +1,5 @@
+(This is not a default state.)
+
 ```
 cat /proc/acpi/wakeup
 Device	S-state	  Status   Sysfs node
