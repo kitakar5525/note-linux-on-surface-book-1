@@ -219,13 +219,13 @@ sudo find / -name wakeup
 /sys/devices/pci0000:00/0000:00:1f.3/power/wakeup
 /sys/devices/pci0000:00/0000:00:1d.0/0000:02:00.0/power/wakeup
 /sys/devices/pci0000:00/0000:00:1d.0/power/wakeup # RP09
-/sys/devices/pci0000:00/0000:00:14.0/usb1/power/wakeup
-/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/power/wakeup
-/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.4/power/wakeup
+/sys/devices/pci0000:00/0000:00:14.0/usb1/power/wakeup # xHCI Host Controller
+/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/power/wakeup # USB2.0 Hub
+/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.4/power/wakeup # Surface Keyboard
 /sys/devices/pci0000:00/0000:00:14.0/usb1/1-6/power/wakeup # USB 1-6 (Bluetooth and Wireless LAN Composite Device)
 /sys/devices/pci0000:00/0000:00:14.0/power/wakeup # XHC
-/sys/devices/pci0000:00/0000:00:14.0/usb2/2-1/power/wakeup
-/sys/devices/pci0000:00/0000:00:14.0/usb2/power/wakeup
+/sys/devices/pci0000:00/0000:00:14.0/usb2/2-1/power/wakeup # USB3.0 Hub
+/sys/devices/pci0000:00/0000:00:14.0/usb2/power/wakeup # xHCI Host Controller
 /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup # LID0
 /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/PNP0C0A:00/power/wakeup # BAT1
 /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/ACPI0003:00/power_supply/ADP1/power/wakeup # ADP1
