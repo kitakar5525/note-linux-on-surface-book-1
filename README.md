@@ -243,6 +243,23 @@ cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW004
 \_SB_.PCI0.LPCB.EC0_.VGBI
 ```
 
+For example, you can enable wakeup from keyboard but disable wakeup from Bluetooth devices like Surface Pen:
+
+```bash
+echo enabled > "/sys/devices/pci0000:00/0000:00:14.0/power/wakeup" # XHC
+echo enabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/power/wakeup" # xHCI Host Controller
+echo enabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/power/wakeup" # USB2.0 Hub
+
+echo enabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.4/power/wakeup" # Surface Keyboard
+echo disabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/1-6/power/wakeup" # Bluetooth and Wireless LAN Composite Device
+```
+
+Disable wakeup from LID open or close (for me, lid close also wakes up my device😢, so I disable it):
+
+```bash
+echo enable > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
+```
+
 ## How to reach pc10 on power-on-idle
 
 - 4.20.1-arch1-1-surface
