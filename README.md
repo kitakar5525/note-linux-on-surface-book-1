@@ -200,7 +200,7 @@ esac
 
 Configure which device to allow wakeup from suspend.
 
-For some reasons we cannot enable or disable wakeup from a devices like lid, keyboard and bluetooth from `/proc/acpi/wakeup` (/proc_acpi_wakeup.md).
+For some reasons we cannot enable or disable wakeup from a devices like lid, keyboard and bluetooth from [/proc/acpi/wakeup](/proc_acpi_wakeup.md).
 
 ```bash
 sudo find / -name wakeup
