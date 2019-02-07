@@ -262,6 +262,29 @@ Disable wakeup from LID open or close (for me, lid close also wakes up my device
 echo disable > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
 ```
 
+You can find which device is enabled for wakeup:
+
+```bash
+tail $(sudo find /sys -name wakeup) | grep enabled -n1
+tail: cannot open '/sys/kernel/debug/tracing/events/ftrace/wakeup' for reading: Permission denied
+181-==> /sys/devices/pci0000:00/0000:00:14.0/usb1/power/wakeup <==
+182:enabled
+183-
+184-==> /sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/power/wakeup <==
+185:enabled
+186-
+187-==> /sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.4/power/wakeup <==
+188:enabled
+189-
+--
+193-==> /sys/devices/pci0000:00/0000:00:14.0/power/wakeup <==
+194:enabled
+195-
+--
+214-==> /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW0040:00/power/wakeup <==
+215:enabled
+```
+
 ## How to reach pc10 on power-on-idle
 
 - 4.20.1-arch1-1-surface
