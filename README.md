@@ -248,7 +248,7 @@ cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:19/PNP0C09:00/MSHW004
 For example, you can disable wakeup from LID open or close (for me, lid close also wakes up my device😢, so I disable it):
 
 ```bash
-echo disable > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
+echo disabled > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
 ```
 
 You can find which device is enabled for wakeup:
