@@ -23505,9 +23505,9 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
 
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                If ((Arg0 == ToUUID ("c4eb40a0-6cd2-11e2-bcfd-0800200c9a66")))
+                If ((Arg0 == ToUUID ("c4eb40a0-6cd2-11e2-bcfd-0800200c9a66")))  // Low Power S0 Idle Device-Specific Method (_DSM) Definition
                 {
-                    If ((Arg2 == Zero))
+                    If ((Arg2 == Zero))                 // Enum Functions
                     {
                         Return (Buffer (One)
                         {
@@ -23515,7 +23515,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         })
                     }
 
-                    If ((Arg2 == One))
+                    If ((Arg2 == One))              // Get Device Constraints
                     {
                         If ((S0ID == Zero))
                         {
@@ -23778,14 +23778,14 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         Return (DEVY) /* \_SB_.PEPD.DEVY */
                     }
 
-                    If ((Arg2 == 0x02))
+                    If ((Arg2 == 0x02))                     // Get Crash Dump Device
                     {
                         Return (BCCD) /* \_SB_.PEPD.BCCD */
                     }
 
-                    If ((Arg2 == 0x03)){}
-                    If ((Arg2 == 0x04)){}
-                    If ((Arg2 == 0x05))
+                    If ((Arg2 == 0x03)){}                   // Display Off Notification
+                    If ((Arg2 == 0x04)){}                   // Display On Notification
+                    If ((Arg2 == 0x05))                     // Low Power S0 Entry Notification
                     {
                         If ((S0ID == One))
                         {
@@ -23793,7 +23793,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         }
                     }
 
-                    If ((Arg2 == 0x06))
+                    If ((Arg2 == 0x06))                 // Low Power S0 Exit Notification
                     {
                         If ((S0ID == One))
                         {
