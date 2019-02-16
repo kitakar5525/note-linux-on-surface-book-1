@@ -87,7 +87,7 @@ Model Number:                       THNSN5512GPU7 TOSHIBA
 Firmware Version:                   57MS4109
 ```
 
-then, disable D3 state of NVMe and Wi-Fi
+then, disable D3 state of NVMe
 
 ```bash
 echo 0 > "/sys/bus/pci/devices/0000:02:00.0/d3cold_allowed" # nvme
