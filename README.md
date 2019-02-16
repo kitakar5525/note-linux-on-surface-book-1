@@ -10,11 +10,12 @@ Table of Contents
         - [What is working IF you apply patch(es) to kernel](#what-is-working-if-you-apply-patches-to-kernel)
         - [What is NOT working](#what-is-not-working)
     - [Suspend (s2idle) issues](#suspend-s2idle-issues)
-        - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
-        - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
+        - [Observe s2idle issue](#observe-s2idle-issue)
+        - [NVMe SSD not working after s2idle](#nvme-ssd-not-working-after-s2idle)
             - [Or apply patches to kernel](#or-apply-patches-to-kernel)
             - [Memo: What I tried for NVMe which did not work](#memo-what-i-tried-for-nvme-which-did-not-work)
-        - [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
+        - [Wi-Fi not working after s2idle](#wi-fi-not-working-after-s2idle)
+        - [Power comsumption on s2idle](#power-comsumption-on-s2idle)
     - [Wi-Fi issues](#wi-fi-issues)
         - [Disable Wi-Fi power_save for stability](#disable-wi-fi-power_save-for-stability)
             - [Or apply patch to kernel](#or-apply-patch-to-kernel)
@@ -39,21 +40,23 @@ Table of Contents
 ### What is working IF you apply patch(es) to kernel
 
 - Touch input: like touchscreen and pen.
-    - Apply ipts patch from [jakeday repository](https://github.com/jakeday/linux-surface)
+    - Apply ipts patch from [jakeday repository](https://github.cpowerom/jakeday/linux-surface)
 
 ### What is NOT working
 
 - S0ix state
-    - Means power consumption is high on suspend (s2idle).
+    - Means power consumption is high on suspend (s2idle). See [Power comsumption on suspend (s2idle)](#power-comsumption-on-suspend-s2idle)
 - Cameras
+    - Issue tracked here: [Surface Pro 4 / 2017 and Books: Cameras are not working · Issue #145 · jakeday/linux-surface](https://github.com/jakeday/linux-surface/issues/145)
 - dGPU
+    - See [dGPU not working](#dgpu-not-working)
 - Touch input (IPTS) sometimes crashes
     - But now the frequency is very low thanks to this [commit](https://github.com/jakeday/linux-surface/commit/1143fcaa6b40e6bd53adba8556789155572ef4fb#diff-42d706f8ccc685dafed2052309affbd7) in jakeday repository.
 - Wi-Fi power_save
     - We need to disable power_save for stability for now. If we disable power_save, the stability is enough for daily usage. Disabling power_save is included in wifi patch of jakeday repository.
 
 ## Suspend (s2idle) issues
-### Observe suspend (s2idle) issue
+### Observe s2idle issue
 
 ```bash
 echo 1 > /sys/power/pm_debug_messages
@@ -68,9 +71,10 @@ pci 0000:03:00.0: Refused to change power state, currently in D3
 nvme 0000:02:00.0: Refused to change power state, currently in D3
 ```
 
-then, go to next section.
+For nvme, see [NVMe SSD not working after s2idle](#nvme-ssd-not-working-after-s2idle).
+For wifi, see [Wi-Fi not working after s2idle](#wi-fi-not-working-after-s2idle).
 
-### resume from suspend (s2idle)
+### NVMe SSD not working after s2idle
 
 if you have TOSHIBA NVMe disk, you may need to disable D3 state of NVMe disk
 
@@ -87,7 +91,6 @@ then, disable D3 state of NVMe and Wi-Fi
 
 ```bash
 echo 0 > "/sys/bus/pci/devices/0000:02:00.0/d3cold_allowed" # nvme
-echo 0 > "/sys/bus/pci/devices/0000:03:00.0/d3cold_allowed" # wifi
 ```
 
 #### Or apply patches to kernel
@@ -110,7 +113,13 @@ patches here:
 - `NVME_QUIRK_DELAY_BEFORE_CHK_RDY`
 - `NVME_QUIRK_NO_DEEPEST_PS`
 
-### Power comsumption on suspend (s2idle)
+### Wi-Fi not working after s2idle
+
+You can disable D3 state of Wi-Fi just like NVMe disk: `echo 0 > "/sys/bus/pci/devices/0000:03:00.0/d3cold_allowed" # wifi`, or apply patch to disable D3.
+
+However, I think this is not power-efficient. I suggest that we just leave Wi-Fi to D3 and after suspend, reset Wi-Fi to wake it up. See [Reset Wi-Fi in case of Wi-Fi crashing or malfunctioning](#reset-wi-fi-in-case-of-wi-fi-crashing-or-malfunctioning) and [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep).
+
+### Power comsumption on s2idle
 
 Documentation from Intel:
 - [How to achieve S0ix states in Linux* | 01.org](https://01.org/blogs/qwang59/2018/how-achieve-s0ix-states-linux)
@@ -159,9 +168,12 @@ It is stable enough if you apply wifi patch from jakeday repo. But in case of Wi
 - Requires [acpi_call](https://github.com/mkottman/acpi_call)
 
 ```bash
+# Reset Wi-Fi
 echo '\_SB.PCI0.RP12.PXSX.PRWF._RST' > /proc/acpi/call
 echo 1 > "/sys/bus/pci/devices/0000:00:1d.3/remove"
+sleep 1
 echo 1 > /sys/bus/pci/rescan
+sleep 1
 ```
 
 It seems that once we issue `echo '\_SB.PCI0.RP12.PXSX.PRWF._OFF' > /proc/acpi/call`, then we cannot wakeup wifi again.
@@ -184,21 +196,34 @@ You can see parameters value of a module by: `sudo systool -m i915 -v`. Paramete
 
 case $1/$2 in
   pre/*)
+    echo disabled > "/sys/devices/pci0000:00/0000:00:14.0/power/wakeup" # XHC
+    echo disabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.4/power/wakeup" # Surface Keyboard
+    echo disabled > "/sys/devices/pci0000:00/0000:00:14.0/usb1/1-6/power/wakeup" # Bluetooth and Wireless LAN Composite Device
+    #echo enabled > "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/power/wakeup" # LID0
+
     echo 1 > /sys/power/pm_debug_messages
     echo 0 > /sys/module/printk/parameters/console_suspend
     echo 1 > /sys/module/printk/parameters/ignore_loglevel
+    #echo 1 > /sys/module/acpi/parameters/ec_no_wakeup
+    #sysctl kernel.resume_delay=2000
+    #echo 1 > /sys/module/mwifiex/parameters/disconnect_on_suspend
 
     modprobe -r intel_ipts
     modprobe -r mei_me
     modprobe -r mei
     ;;
   post/*)
+    # Reset Wi-Fi
+    echo '\_SB.PCI0.RP12.PXSX.PRWF._RST' > /proc/acpi/call
+    echo 1 > "/sys/bus/pci/devices/0000:00:1d.3/remove"
+    sleep 1
+    echo 1 > /sys/bus/pci/rescan
+    sleep 1
+    echo disabled > "/sys/devices/pci0000:00/0000:00:1d.3/power/wakeup" # RP12
+    
     modprobe -i intel_ipts
     modprobe -i mei_me
     modprobe -i mei
-
-    modprobe -r mwifiex_pcie
-    modprobe -i mwifiex_pcie
 
     echo 0 > /sys/module/printk/parameters/ignore_loglevel
     ;;
