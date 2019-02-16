@@ -1,27 +1,14 @@
 # Notes of Linux on Surface Book 1 with Performance Base
 Notes to use Linux on Surface Book 1 with Performance Base. Maybe also useful to other devices.
 
-- What is working IF you configure settings or apply patch(es)
-  - suspend (s2idle): see [Suspend (s2idle) issues](#suspend-s2idle-issues)
-
-- What is working IF you apply patch(es) to kernel
-  - From jakeday [repository](https://github.com/jakeday/linux-surface), at least you need following patch(es):
-    - IPTS patch: for touch input like touchscreen and pen.
-
-- What is NOT working
-  - S0ix state
-    - Means power consumption is high on suspend (s2idle).
-  - Cameras
-  - dGPU
-  - Touch input (IPTS) sometimes crashes
-    - But now the frequency is very low thanks to this [commit](https://github.com/jakeday/linux-surface/commit/1143fcaa6b40e6bd53adba8556789155572ef4fb#diff-42d706f8ccc685dafed2052309affbd7) in jakeday repository.
-  - Wi-Fi power_save
-    - We need to disable power_save for stability for now. If we disable power_save, the stability is enough for daily usage. Disabling power_save is included in wifi patch of jakeday repository.
-
 Table of Contents
 <!-- TOC -->
 
 - [Notes of Linux on Surface Book 1 with Performance Base](#notes-of-linux-on-surface-book-1-with-performance-base)
+    - [Working state](#working-state)
+        - [What is working IF you configure settings or apply patch(es)](#what-is-working-if-you-configure-settings-or-apply-patches)
+        - [What is working IF you apply patch(es) to kernel](#what-is-working-if-you-apply-patches-to-kernel)
+        - [What is NOT working](#what-is-not-working)
     - [Suspend (s2idle) issues](#suspend-s2idle-issues)
         - [Observe suspend (s2idle) issue](#observe-suspend-s2idle-issue)
         - [resume from suspend (s2idle)](#resume-from-suspend-s2idle)
@@ -42,6 +29,28 @@ Table of Contents
         - [\_SB_.PCI0.I2C0.SAM_](#\_sb_pci0i2c0sam_)
 
 <!-- /TOC -->
+
+## Working state
+
+### What is working IF you configure settings or apply patch(es)
+
+- suspend (s2idle): see [Suspend (s2idle) issues](#suspend-s2idle-issues)
+
+### What is working IF you apply patch(es) to kernel
+
+- Touch input: like touchscreen and pen.
+    - Apply ipts patch from [jakeday repository](https://github.com/jakeday/linux-surface)
+
+### What is NOT working
+
+- S0ix state
+    - Means power consumption is high on suspend (s2idle).
+- Cameras
+- dGPU
+- Touch input (IPTS) sometimes crashes
+    - But now the frequency is very low thanks to this [commit](https://github.com/jakeday/linux-surface/commit/1143fcaa6b40e6bd53adba8556789155572ef4fb#diff-42d706f8ccc685dafed2052309affbd7) in jakeday repository.
+- Wi-Fi power_save
+    - We need to disable power_save for stability for now. If we disable power_save, the stability is enough for daily usage. Disabling power_save is included in wifi patch of jakeday repository.
 
 ## Suspend (s2idle) issues
 ### Observe suspend (s2idle) issue
