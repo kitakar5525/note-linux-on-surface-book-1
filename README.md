@@ -12,7 +12,7 @@ Table of Contents
     - [Suspend (s2idle) issues](#suspend-s2idle-issues)
         - [Observe s2idle issue](#observe-s2idle-issue)
         - [NVMe SSD not working after s2idle](#nvme-ssd-not-working-after-s2idle)
-            - [Or apply patches to kernel](#or-apply-patches-to-kernel)
+            - [References](#references)
             - [Memo: What I tried for NVMe which did not work](#memo-what-i-tried-for-nvme-which-did-not-work)
         - [Wi-Fi not working after s2idle](#wi-fi-not-working-after-s2idle)
         - [Power comsumption on s2idle](#power-comsumption-on-s2idle)
@@ -87,22 +87,23 @@ Model Number:                       THNSN5512GPU7 TOSHIBA
 Firmware Version:                   57MS4109
 ```
 
-then, disable D3 state of NVMe
+then, disable D3 state of NVMe. There are two ways to disable D3 state:
 
 ```bash
 echo 0 > "/sys/bus/pci/devices/0000:02:00.0/d3cold_allowed" # nvme
 ```
 
-#### Or apply patches to kernel
+or, apply patches to kernel like this:
+- [[v2,1/2] pci: prevent sk hynix nvme from entering D3 - Patchwork](https://lore.kernel.org/patchwork/patch/1007283/)
+
+This is enough for just fix suspend resume, but because we disable the D3 state of NVMe, this is not power-efficient. You may want to apply like below patch, too:
+- [[v2,2/2] nvme: add quirk to not call disable function when suspending - Patchwork](https://lore.kernel.org/patchwork/patch/1007284/)
+
+#### References
 
 I found a similar issue on another NVMe disk:
 - [196907 – [Regression] s2idle does not work with PC300 NVMe SK hynix 512GB - Dell XPS 13 9360](https://bugzilla.kernel.org/show_bug.cgi?id=196907)
 - [199689 – s2idle does not work in Dell XPS 9370](https://bugzilla.kernel.org/show_bug.cgi?id=199689)
-
-patches here:
-
-- [[v2,1/2] pci: prevent sk hynix nvme from entering D3 - Patchwork](https://lore.kernel.org/patchwork/patch/1007283/)
-- [[v2,2/2] nvme: add quirk to not call disable function when suspending - Patchwork](https://lore.kernel.org/patchwork/patch/1007284/)
 
 #### Memo: What I tried for NVMe which did not work
 
@@ -115,7 +116,7 @@ patches here:
 
 ### Wi-Fi not working after s2idle
 
-You can disable D3 state of Wi-Fi just like NVMe disk: `echo 0 > "/sys/bus/pci/devices/0000:03:00.0/d3cold_allowed" # wifi`, or apply patch to disable D3.
+You can simply disable D3 state of Wi-Fi: `echo 0 > "/sys/bus/pci/devices/0000:03:00.0/d3cold_allowed" # wifi`, or apply patch to disable D3.
 
 However, I think this is not power-efficient. I suggest that we just leave Wi-Fi to D3 and after suspend, reset Wi-Fi to wake it up. See [Reset Wi-Fi in case of Wi-Fi crashing or malfunctioning](#reset-wi-fi-in-case-of-wi-fi-crashing-or-malfunctioning) and [/usr/lib/systemd/system-sleep/sleep](#usrlibsystemdsystem-sleepsleep).
 
