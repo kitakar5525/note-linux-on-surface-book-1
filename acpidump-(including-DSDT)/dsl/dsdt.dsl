@@ -16353,7 +16353,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
         * 🤔 There is no dependency specification (`_DEP`) on the `SAM` device and it seems like there is actually a real I2C chip there
         * (which is a difference to the SB2).
         */
-        Device (SAM)                                // 🤔 Surface Attach(ment) Mechanism (?)
+        Device (SAM)                                // Surface Aggregator Module
         {
             Name (_HID, "MSHW0030")  // _HID: Hardware ID
             Name (_CID, "PNP0C50" /* HID Protocol Device (I2C bus) */)  // _CID: Compatible ID
