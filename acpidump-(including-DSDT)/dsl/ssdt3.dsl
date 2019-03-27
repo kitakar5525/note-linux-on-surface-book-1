@@ -1,17 +1,17 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190108 (64-bit version)
+ * AML/ASL+ Disassembler version 20190215 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt3.dat, Sun Feb  3 21:10:04 2019
+ * Disassembly of ssdt3.dat, Wed Mar 27 22:13:21 2019
  *
  * Original Table Header:
  *     Signature        "SSDT"
  *     Length           0x000017AE (6062)
  *     Revision         0x02
- *     Checksum         0xBF
+ *     Checksum         0xCD
  *     OEM ID           "CpuRef"
  *     OEM Table ID     "CpuSsdt"
  *     OEM Revision     0x00003000 (12288)
@@ -87,7 +87,7 @@ DefinitionBlock ("", "SSDT", 2, "CpuRef", "CpuSsdt", 0x00003000)
     Scope (\_PR)
     {
         Name (CTPC, Zero)
-        OperationRegion (PNVS, SystemMemory, 0x8AAE8000, 0x006C)
+        OperationRegion (PNVS, SystemMemory, 0x8AB07000, 0x006C)
         Field (PNVS, AnyAcc, Lock, Preserve)
         {
             PGRV,   8, 

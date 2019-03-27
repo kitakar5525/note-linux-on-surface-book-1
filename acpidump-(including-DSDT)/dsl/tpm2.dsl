@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190108 (64-bit version)
+ * AML/ASL+ Disassembler version 20190215 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
- * Disassembly of tpm2.dat, Sun Feb  3 21:10:05 2019
+ * Disassembly of tpm2.dat, Wed Mar 27 22:13:21 2019
  *
  * ACPI Data Table [TPM2]
  *

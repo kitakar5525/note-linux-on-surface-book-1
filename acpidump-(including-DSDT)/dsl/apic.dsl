@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190108 (64-bit version)
+ * AML/ASL+ Disassembler version 20190215 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
- * Disassembly of apic.dat, Sun Feb  3 21:10:04 2019
+ * Disassembly of apic.dat, Wed Mar 27 22:13:21 2019
  *
  * ACPI Data Table [APIC]
  *
@@ -30,6 +30,7 @@
 [02Fh 0047   1]                Local Apic ID : 00
 [030h 0048   4]        Flags (decoded below) : 00000001
                            Processor Enabled : 1
+                      Runtime Online Capable : 0
 
 [034h 0052   1]                Subtable Type : 00 [Processor Local APIC]
 [035h 0053   1]                       Length : 08
@@ -37,6 +38,7 @@
 [037h 0055   1]                Local Apic ID : 02
 [038h 0056   4]        Flags (decoded below) : 00000001
                            Processor Enabled : 1
+                      Runtime Online Capable : 0
 
 [03Ch 0060   1]                Subtable Type : 00 [Processor Local APIC]
 [03Dh 0061   1]                       Length : 08
@@ -44,6 +46,7 @@
 [03Fh 0063   1]                Local Apic ID : 01
 [040h 0064   4]        Flags (decoded below) : 00000001
                            Processor Enabled : 1
+                      Runtime Online Capable : 0
 
 [044h 0068   1]                Subtable Type : 00 [Processor Local APIC]
 [045h 0069   1]                       Length : 08
@@ -51,6 +54,7 @@
 [047h 0071   1]                Local Apic ID : 03
 [048h 0072   4]        Flags (decoded below) : 00000001
                            Processor Enabled : 1
+                      Runtime Online Capable : 0
 
 [04Ch 0076   1]                Subtable Type : 00 [Processor Local APIC]
 [04Dh 0077   1]                       Length : 08
@@ -58,6 +62,7 @@
 [04Fh 0079   1]                Local Apic ID : FF
 [050h 0080   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [054h 0084   1]                Subtable Type : 00 [Processor Local APIC]
 [055h 0085   1]                       Length : 08
@@ -65,6 +70,7 @@
 [057h 0087   1]                Local Apic ID : FF
 [058h 0088   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [05Ch 0092   1]                Subtable Type : 00 [Processor Local APIC]
 [05Dh 0093   1]                       Length : 08
@@ -72,6 +78,7 @@
 [05Fh 0095   1]                Local Apic ID : FF
 [060h 0096   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [064h 0100   1]                Subtable Type : 00 [Processor Local APIC]
 [065h 0101   1]                       Length : 08
@@ -79,6 +86,7 @@
 [067h 0103   1]                Local Apic ID : FF
 [068h 0104   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [06Ch 0108   1]                Subtable Type : 00 [Processor Local APIC]
 [06Dh 0109   1]                       Length : 08
@@ -86,6 +94,7 @@
 [06Fh 0111   1]                Local Apic ID : FF
 [070h 0112   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [074h 0116   1]                Subtable Type : 00 [Processor Local APIC]
 [075h 0117   1]                       Length : 08
@@ -93,6 +102,7 @@
 [077h 0119   1]                Local Apic ID : FF
 [078h 0120   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [07Ch 0124   1]                Subtable Type : 00 [Processor Local APIC]
 [07Dh 0125   1]                       Length : 08
@@ -100,6 +110,7 @@
 [07Fh 0127   1]                Local Apic ID : FF
 [080h 0128   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [084h 0132   1]                Subtable Type : 00 [Processor Local APIC]
 [085h 0133   1]                       Length : 08
@@ -107,6 +118,7 @@
 [087h 0135   1]                Local Apic ID : FF
 [088h 0136   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [08Ch 0140   1]                Subtable Type : 00 [Processor Local APIC]
 [08Dh 0141   1]                       Length : 08
@@ -114,6 +126,7 @@
 [08Fh 0143   1]                Local Apic ID : FF
 [090h 0144   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [094h 0148   1]                Subtable Type : 00 [Processor Local APIC]
 [095h 0149   1]                       Length : 08
@@ -121,6 +134,7 @@
 [097h 0151   1]                Local Apic ID : FF
 [098h 0152   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [09Ch 0156   1]                Subtable Type : 00 [Processor Local APIC]
 [09Dh 0157   1]                       Length : 08
@@ -128,6 +142,7 @@
 [09Fh 0159   1]                Local Apic ID : FF
 [0A0h 0160   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [0A4h 0164   1]                Subtable Type : 00 [Processor Local APIC]
 [0A5h 0165   1]                       Length : 08
@@ -135,6 +150,7 @@
 [0A7h 0167   1]                Local Apic ID : FF
 [0A8h 0168   4]        Flags (decoded below) : 00000000
                            Processor Enabled : 0
+                      Runtime Online Capable : 0
 
 [0ACh 0172   1]                Subtable Type : 01 [I/O APIC]
 [0ADh 0173   1]                       Length : 0C

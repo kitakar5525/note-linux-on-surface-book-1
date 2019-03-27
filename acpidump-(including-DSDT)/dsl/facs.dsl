@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190108 (64-bit version)
+ * AML/ASL+ Disassembler version 20190215 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
- * Disassembly of facs.dat, Sun Feb  3 21:10:04 2019
+ * Disassembly of facs.dat, Wed Mar 27 22:13:21 2019
  *
  * ACPI Data Table [FACS]
  *
@@ -12,7 +12,7 @@
 
 [000h 0000   4]                    Signature : "FACS"
 [004h 0004   4]                       Length : 00000040
-[008h 0008   4]           Hardware Signature : C5D55AD0
+[008h 0008   4]           Hardware Signature : 1AAFFC3A
 [00Ch 0012   4]    32 Firmware Waking Vector : 00000000
 [010h 0016   4]                  Global Lock : 00000000
 [014h 0020   4]        Flags (decoded below) : 00000000
@@ -26,7 +26,7 @@
 
 Raw Table Data: Length 64 (0x40)
 
-    0000: 46 41 43 53 40 00 00 00 D0 5A D5 C5 00 00 00 00  // FACS@....Z......
+    0000: 46 41 43 53 40 00 00 00 3A FC AF 1A 00 00 00 00  // FACS@...:.......
     0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     0020: 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................
     0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // ................

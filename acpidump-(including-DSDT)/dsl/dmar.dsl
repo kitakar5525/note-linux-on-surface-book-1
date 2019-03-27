@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190108 (64-bit version)
+ * AML/ASL+ Disassembler version 20190215 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
- * Disassembly of dmar.dat, Sun Feb  3 21:10:04 2019
+ * Disassembly of dmar.dat, Wed Mar 27 22:13:21 2019
  *
  * ACPI Data Table [DMAR]
  *
@@ -11,9 +11,9 @@
  */
 
 [000h 0000   4]                    Signature : "DMAR"    [DMA Remapping table]
-[004h 0004   4]                 Table Length : 00000118
+[004h 0004   4]                 Table Length : 00000138
 [008h 0008   1]                     Revision : 01
-[009h 0009   1]                     Checksum : 40
+[009h 0009   1]                     Checksum : 0B
 [00Ah 0010   6]                       Oem ID : "MSFT  "
 [010h 0016   8]                 Oem Table ID : "MSFT    "
 [018h 0024   4]                 Oem Revision : 00000001
@@ -108,8 +108,8 @@
 
 [08Ch 0140   2]                     Reserved : 0000
 [08Eh 0142   2]           PCI Segment Number : 0000
-[090h 0144   8]                 Base Address : 000000008D000000
-[098h 0152   8]          End Address (limit) : 000000008F7FFFFF
+[090h 0144   8]                 Base Address : 000000003E2E0000
+[098h 0152   8]          End Address (limit) : 000000003E2FFFFF
 
 [0A0h 0160   1]            Device Scope Type : 01 [PCI Endpoint Device]
 [0A1h 0161   1]                 Entry Length : 08
@@ -117,40 +117,57 @@
 [0A4h 0164   1]               Enumeration ID : 00
 [0A5h 0165   1]               PCI Bus Number : 00
 
-[0A6h 0166   2]                     PCI Path : 02,00
+[0A6h 0166   2]                     PCI Path : 14,00
 
 
-[0A8h 0168   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
-[0AAh 0170   2]                       Length : 001C
+[0A8h 0168   2]                Subtable Type : 0001 [Reserved Memory Region]
+[0AAh 0170   2]                       Length : 0020
 
-[0ACh 0172   3]                     Reserved : 000000
-[0AFh 0175   1]                Device Number : 01
-[0B0h 0176  15]                  Device Name : "\_SB.PCI0.I2C0"
+[0ACh 0172   2]                     Reserved : 0000
+[0AEh 0174   2]           PCI Segment Number : 0000
+[0B0h 0176   8]                 Base Address : 000000008D000000
+[0B8h 0184   8]          End Address (limit) : 000000008F7FFFFF
 
-[0C4h 0196   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
-[0C6h 0198   2]                       Length : 001C
+[0C0h 0192   1]            Device Scope Type : 01 [PCI Endpoint Device]
+[0C1h 0193   1]                 Entry Length : 08
+[0C2h 0194   2]                     Reserved : 0000
+[0C4h 0196   1]               Enumeration ID : 00
+[0C5h 0197   1]               PCI Bus Number : 00
 
-[0C8h 0200   3]                     Reserved : 000000
-[0CBh 0203   1]                Device Number : 02
-[0CCh 0204  15]                  Device Name : "\_SB.PCI0.I2C1"
+[0C6h 0198   2]                     PCI Path : 02,00
 
-[0E0h 0224   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
-[0E2h 0226   2]                       Length : 001C
 
-[0E4h 0228   3]                     Reserved : 000000
-[0E7h 0231   1]                Device Number : 03
-[0E8h 0232  15]                  Device Name : "\_SB.PCI0.I2C2"
+[0C8h 0200   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
+[0CAh 0202   2]                       Length : 001C
 
-[0FCh 0252   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
-[0FEh 0254   2]                       Length : 001C
+[0CCh 0204   3]                     Reserved : 000000
+[0CFh 0207   1]                Device Number : 01
+[0D0h 0208  15]                  Device Name : "\_SB.PCI0.I2C0"
 
-[100h 0256   3]                     Reserved : 000000
-[103h 0259   1]                Device Number : 04
-[104h 0260  15]                  Device Name : "\_SB.PCI0.I2C3"
+[0E4h 0228   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
+[0E6h 0230   2]                       Length : 001C
 
-Raw Table Data: Length 280 (0x118)
+[0E8h 0232   3]                     Reserved : 000000
+[0EBh 0235   1]                Device Number : 02
+[0ECh 0236  15]                  Device Name : "\_SB.PCI0.I2C1"
 
-    0000: 44 4D 41 52 18 01 00 00 01 40 4D 53 46 54 20 20  // DMAR.....@MSFT  
+[100h 0256   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
+[102h 0258   2]                       Length : 001C
+
+[104h 0260   3]                     Reserved : 000000
+[107h 0263   1]                Device Number : 03
+[108h 0264  15]                  Device Name : "\_SB.PCI0.I2C2"
+
+[11Ch 0284   2]                Subtable Type : 0004 [ACPI Namespace Device Declaration]
+[11Eh 0286   2]                       Length : 001C
+
+[120h 0288   3]                     Reserved : 000000
+[123h 0291   1]                Device Number : 04
+[124h 0292  15]                  Device Name : "\_SB.PCI0.I2C3"
+
+Raw Table Data: Length 312 (0x138)
+
+    0000: 44 4D 41 52 38 01 00 00 01 0B 4D 53 46 54 20 20  // DMAR8.....MSFT  
     0010: 4D 53 46 54 20 20 20 20 01 00 00 00 49 4E 54 4C  // MSFT    ....INTL
     0020: 01 00 00 00 26 01 00 00 00 00 00 00 00 00 00 00  // ....&...........
     0030: 00 00 18 00 00 00 00 00 00 00 D9 FE 00 00 00 00  // ................
@@ -159,12 +176,14 @@ Raw Table Data: Length 280 (0x118)
     0060: 04 08 00 00 00 00 1F 00 05 08 00 00 01 00 15 00  // ................
     0070: 05 08 00 00 02 00 15 01 05 08 00 00 03 00 15 02  // ................
     0080: 05 08 00 00 04 00 15 03 01 00 20 00 00 00 00 00  // .......... .....
-    0090: 00 00 00 8D 00 00 00 00 FF FF 7F 8F 00 00 00 00  // ................
-    00A0: 01 08 00 00 00 00 02 00 04 00 1C 00 00 00 00 01  // ................
-    00B0: 5C 5F 53 42 2E 50 43 49 30 2E 49 32 43 30 00 00  // \_SB.PCI0.I2C0..
-    00C0: 00 00 00 00 04 00 1C 00 00 00 00 02 5C 5F 53 42  // ............\_SB
-    00D0: 2E 50 43 49 30 2E 49 32 43 31 00 00 00 00 00 00  // .PCI0.I2C1......
-    00E0: 04 00 1C 00 00 00 00 03 5C 5F 53 42 2E 50 43 49  // ........\_SB.PCI
-    00F0: 30 2E 49 32 43 32 00 00 00 00 00 00 04 00 1C 00  // 0.I2C2..........
-    0100: 00 00 00 04 5C 5F 53 42 2E 50 43 49 30 2E 49 32  // ....\_SB.PCI0.I2
-    0110: 43 33 00 00 00 00 00 00                          // C3......
+    0090: 00 00 2E 3E 00 00 00 00 FF FF 2F 3E 00 00 00 00  // ...>....../>....
+    00A0: 01 08 00 00 00 00 14 00 01 00 20 00 00 00 00 00  // .......... .....
+    00B0: 00 00 00 8D 00 00 00 00 FF FF 7F 8F 00 00 00 00  // ................
+    00C0: 01 08 00 00 00 00 02 00 04 00 1C 00 00 00 00 01  // ................
+    00D0: 5C 5F 53 42 2E 50 43 49 30 2E 49 32 43 30 00 00  // \_SB.PCI0.I2C0..
+    00E0: 00 00 00 00 04 00 1C 00 00 00 00 02 5C 5F 53 42  // ............\_SB
+    00F0: 2E 50 43 49 30 2E 49 32 43 31 00 00 00 00 00 00  // .PCI0.I2C1......
+    0100: 04 00 1C 00 00 00 00 03 5C 5F 53 42 2E 50 43 49  // ........\_SB.PCI
+    0110: 30 2E 49 32 43 32 00 00 00 00 00 00 04 00 1C 00  // 0.I2C2..........
+    0120: 00 00 00 04 5C 5F 53 42 2E 50 43 49 30 2E 49 32  // ....\_SB.PCI0.I2
+    0130: 43 33 00 00 00 00 00 00                          // C3......
