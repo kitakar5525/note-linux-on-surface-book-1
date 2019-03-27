@@ -5319,18 +5319,23 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
             CPSC,   1
         }
 
+        //
+        // PWRM register definitions
+        //
+        // - [[10/10] platform/x86: intel_pmc_core: Quirk to ignore XTAL shutdown - Patchwork](https://patchwork.kernel.org/patch/10791883/)
+        // - [edk2-platforms/Pch.asl at devel-MinPlatform · tianocore/edk2-platforms](https://github.com/tianocore/edk2-platforms/blob/9a0a7a2ff0a57c5a8747f7cca7881a3e129028f8/Silicon/Intel/KabylakeSiliconPkg/Pch/AcpiTables/Dsdt/Pch.asl#L281)
         OperationRegion (PWMR, SystemMemory, PWRM, 0x0800)
         Field (PWMR, AnyAcc, NoLock, Preserve)
         {
             Offset (0xE0), 
             Offset (0xE2), 
-            DWLE,   1, 
-            HWLE,   1, 
+            DWLE,   1,                  // Deep-Sx WLAN Phy Power Enable
+            HWLE,   1,                  // Host Wireless LAN Phy Power Enable
             Offset (0x31C), 
                 ,   13, 
-            SLS0,   1, 
+            SLS0,   1,                      // SLP_S0# Low Voltage Mode Enable (SLPS0LVEN)
                 ,   8, 
-            XSQD,   1
+            XSQD,   1                   // 24MHz Crystal Shutdown Qualification Disable (XTALSDQDIS)
         }
 
         OperationRegion (PMST, SystemMemory, PWRM, 0x80)
@@ -13752,7 +13757,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
 
     Scope (_SB)
     {
-        Name (HDAA, Zero)
+        Name (HDAA, Zero)               // HDA codecs audio functions bridge driver
         Name (DISA, One)
         Method (DION, 0, NotSerialized)
         {
@@ -16312,6 +16317,13 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
         }
     }
 
+    /*
+    * [[SB w Performance Base] `lspci` doesn't show Nvidia 965M graphics card · Issue #286 · jakeday/linux-surface](https://github.com/jakeday/linux-surface/issues/286)
+    *
+    * All in all I'm fairly certain that we need a custom I2C driver to get this to work.
+    * It might be possible to reverse-engineer that (maybe via some logs from Windows,
+    * similar to what helped us figure things out for the SB2 etc.) but I doubt it'll be easy.
+    */
     Scope (_SB.PCI0.I2C0)
     {
         Name (_S0W, 0x03)  // _S0W: S0 Device Wake State
@@ -16325,7 +16337,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                     0x00, ResourceConsumer, , Exclusive,
                     )
             ), 
-            AccessAs (BufferAcc, AttribRawBytes (0x1A)), 
+            AccessAs (BufferAcc, AttribRawBytes (0x1A)),    // defined as protocol in the I2C OpRegion being accessed via `SCMD`/`WRIT`
             WRIT,   8
         }
 
@@ -16337,7 +16349,11 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
             }
         }
 
-        Device (SAM)
+        /*
+        * 🤔 There is no dependency specification (`_DEP`) on the `SAM` device and it seems like there is actually a real I2C chip there
+        * (which is a difference to the SB2).
+        */
+        Device (SAM)                                // Surface Aggregator Module
         {
             Name (_HID, "MSHW0030")  // _HID: Hardware ID
             Name (_CID, "PNP0C50" /* HID Protocol Device (I2C bus) */)  // _CID: Compatible ID
@@ -16413,6 +16429,16 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                 }
             }
 
+            /*
+            * The data transmitted can basically be anything, implying that a custom driver is required.
+            * This, in concept, is quite similar to the mechanism used for the EC in the SB2 (etc.),
+            * but the data-protocol seems to differ. Below is what is being transmitted.
+            * 
+            * 🙅 We are not sure what will be done with this data at driver-side.
+            * 
+            * 🤔 It might also help to find out what exactly is being given to the driver.
+            * I couldn't recognize anything, but if somebody else wants to try: Have a look below.
+            */
             Name (SBUF, Buffer (0x28)
             {
                 /* 0000 */  0xBE, 0xEF, 0x05, 0x00, 0x3F, 0x03, 0x24, 0x06,  // ....?.$.
@@ -16420,7 +16446,19 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                 /* 0010 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // ........
                 /* 0018 */  0x00, 0x00, 0x00, 0x00                           // ....
             })
+            /* 
+            * CreateByteField (Create 8-Bit Buffer Field)
+            * 
+            * CreateByteField (SourceBuffer, ByteIndex, ByteFieldName)
+            * SourceBuffer is evaluated as a buffer. ByteIndex is evaluated as an integer. ByteFieldName is a NameString.
+            * 
+            * A new buffer field object named ByteFieldName is created for the byte of SourceBuffer at the byte
+            * index of ByteIndex . The byte-defined field within SourceBuffer must exist.
+            */
             CreateByteField (SBUF, 0x0C, CMD)
+            /*
+            * 🤔 All calls to `SCMD` are dGPU related.
+            */
             Method (SCMD, 1, NotSerialized)
             {
                 UDB1 ("SAM Command Method - Cmd = %0\n", Arg0)
@@ -18001,6 +18039,12 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                          0x01, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00   // ........
                     })
                 }
+                /*
+                * 🤔 There is an eerie similarity between the SB1 and SB2 in terms of the `MOPT` function (Nvidia Optimus related):
+                * Specifically, the calls to `SCMD` and `RQST` have the same command-id.
+                * On the SB2, those calls lock/unlock the base so that it can't be detached when the dGPU is in use.
+                * There are no similar calls with the other command-id (`0x04`, `0x05`) on the SB2.
+                */
                 Case (0x1B)
                 {
                     CreateField (Arg3, 0x02, 0x08, APPC)
@@ -18012,12 +18056,12 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         If ((ToInteger (APPC) == Zero))
                         {
                             ADBG ("Send Apps not present cmd")
-                            ^^^I2C0.SAM.SCMD (0x07)
+                            ^^^I2C0.SAM.SCMD (0x07)                 // ^^^^_SAN.RQST (0x11, 0x07, Zero, Zero, Zero) // On SB2
                         }
                         Else
                         {
                             ADBG ("Send Apps present cmd")
-                            ^^^I2C0.SAM.SCMD (0x06)
+                            ^^^I2C0.SAM.SCMD (0x06)                 // ^^^^_SAN.RQST (0x11, 0x06, Zero, Zero, Zero) ^^^^_SAN.RQSG (0x13, 0x02, Zero, Zero, Zero) // On SB2
                         }
                     }
 
@@ -18037,9 +18081,9 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
         Name (STP1, 0xFF)
         Name (STP2, 0xFF)
         Name (STP3, 0xFF)
-        Name (GLNK, Zero)
+        Name (GLNK, Zero)                        // dGPU Link State (?)
         Name (GC6M, Zero)
-        Name (ATCH, Zero)
+        Name (ATCH, Zero)                       // Base Attach State (?)
         OperationRegion (RPCX, SystemMemory, 0xE00E0000, 0x1000)
         Field (RPCX, DWordAcc, NoLock, Preserve)
         {
@@ -18179,9 +18223,21 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
             }
 
             GLNK = Zero
+
+            /*
+            * 🤔 The actual dGPU power-on/initialization mechanism is actually quite similar,
+            * with the crucial difference that on the SB1, there is a call to `SCMD`
+            * where on the SB2 there are values being set via calls to `SGOV`.
+            * Note that on the SB2 the while-loop for waiting on the status-change is extracted to the `WPGS` function.
+            * 
+            * On SB2, 
+            * SGOV (0x0202000A, Zero)
+            * SGOV (0x0201000F, One)
+            */
             ^^I2C0.SAM.SCMD (0x05)
+            
             Local0 = Zero
-            While ((GGIV (0x02010015) == Zero))
+            While ((GGIV (0x02010015) == Zero))         // Local0 = WPGS (0x02020003, One, 0x0C80)  // On SB2
             {
                 If ((Local0 >= 0x1388))
                 {
@@ -23449,9 +23505,9 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
 
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                If ((Arg0 == ToUUID ("c4eb40a0-6cd2-11e2-bcfd-0800200c9a66")))
+                If ((Arg0 == ToUUID ("c4eb40a0-6cd2-11e2-bcfd-0800200c9a66")))  // Low Power S0 Idle Device-Specific Method (_DSM) Definition
                 {
-                    If ((Arg2 == Zero))
+                    If ((Arg2 == Zero))                 // Enum Functions
                     {
                         Return (Buffer (One)
                         {
@@ -23459,7 +23515,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         })
                     }
 
-                    If ((Arg2 == One))
+                    If ((Arg2 == One))              // Get Device Constraints
                     {
                         If ((S0ID == Zero))
                         {
@@ -23722,14 +23778,14 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         Return (DEVY) /* \_SB_.PEPD.DEVY */
                     }
 
-                    If ((Arg2 == 0x02))
+                    If ((Arg2 == 0x02))                     // Get Crash Dump Device
                     {
                         Return (BCCD) /* \_SB_.PEPD.BCCD */
                     }
 
-                    If ((Arg2 == 0x03)){}
-                    If ((Arg2 == 0x04)){}
-                    If ((Arg2 == 0x05))
+                    If ((Arg2 == 0x03)){}                   // Display Off Notification
+                    If ((Arg2 == 0x04)){}                   // Display On Notification
+                    If ((Arg2 == 0x05))                     // Low Power S0 Entry Notification
                     {
                         If ((S0ID == One))
                         {
@@ -23737,7 +23793,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
                         }
                     }
 
-                    If ((Arg2 == 0x06))
+                    If ((Arg2 == 0x06))                 // Low Power S0 Exit Notification
                     {
                         If ((S0ID == One))
                         {
