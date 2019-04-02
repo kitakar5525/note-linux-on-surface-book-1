@@ -1,6 +1,11 @@
 # Notes of Linux on Surface Book 1 with Performance Base
 Notes to use Linux on Surface Book 1 with Performance Base. Maybe also useful to other devices.
 
+Actual patches are here:
+- [arch\-kernel\-linux\-lts419\-surface](https://github.com/kitakar5525/arch-kernel-linux-lts419-surface)
+- [arch\-kernel\-linux\-surface](https://github.com/kitakar5525/arch-kernel-linux-surface)
+- [arch\-kernel\-linux\-rc\-surface](https://github.com/kitakar5525/arch-kernel-linux-rc-surface)
+
 Table of Contents
 <!-- TOC -->
 
