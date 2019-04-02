@@ -1,0 +1,342 @@
+From 5863bfa91c5345eab1547022d72628afe20d0cca Mon Sep 17 00:00:00 2001
+From: "Hayataka@kitakar5525" <34676735+kitakar5525@users.noreply.github.com>
+Date: Wed, 3 Apr 2019 01:04:02 +0900
+Subject: [PATCH 2/4] Replace UDBX with Printf
+
+---
+ dsdt.dsl | 102 +++++++++++++++++++------------------------------------
+ 1 file changed, 35 insertions(+), 67 deletions(-)
+
+diff --git a/dsdt.dsl b/dsdt.dsl
+index 50676c8..e47d9ae 100644
+--- a/dsdt.dsl
++++ b/dsdt.dsl
+@@ -154,38 +154,6 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+     External (SGMD, UnknownObj)
+     External (XBAS, UnknownObj)
+ 
+-    Method (UDBG, 7, Serialized)
+-    {
+-    }
+-
+-    Method (UDB0, 1, Serialized)
+-    {
+-    }
+-
+-    Method (UDB1, 2, Serialized)
+-    {
+-    }
+-
+-    Method (UDB2, 3, Serialized)
+-    {
+-    }
+-
+-    Method (UDB3, 4, Serialized)
+-    {
+-    }
+-
+-    Method (UDB4, 5, Serialized)
+-    {
+-    }
+-
+-    Method (UDB5, 6, Serialized)
+-    {
+-    }
+-
+-    Method (UDB6, 7, Serialized)
+-    {
+-    }
+-
+     Name (SS1, Zero)
+     Name (SS2, Zero)
+     Name (SS3, Zero)
+@@ -15878,7 +15846,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                             {
+                                 If ((GGIV (0x0202000D) == Zero))
+                                 {
+-                                    UDB0 ("[EC0._DSM] - Base detached\n")
++                                    Printf ("[EC0._DSM] - Base detached\n")
+                                     SGOV (0x0202000C, Zero)
+                                     ^^^^RP05.TDGC = Zero
+                                     ^^^^RP05.DGCX = Zero
+@@ -15897,7 +15865,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+ 
+                                 If ((One == ^^^^RP05.ATCH))
+                                 {
+-                                    UDB0 ("[EC0._DSM] - Recognized D3Cold\n")
++                                    Printf ("[EC0._DSM] - Recognized D3Cold\n")
+                                     Return (Buffer (0x04)
+                                     {
+                                          0x00, 0x00, 0x00, 0x00                           // ....
+@@ -15906,7 +15874,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+ 
+                                 If ((GGIV (0x02010015) == Zero))
+                                 {
+-                                    UDB0 ("[EC0._DSM] - Base attached, powering dGPU\n")
++                                    Printf ("[EC0._DSM] - Base attached, powering dGPU\n")
+                                     ^^^^I2C0.SAM.SCMD (0x05)
+                                     Return (Buffer (0x04)
+                                     {
+@@ -15914,7 +15882,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                                     })
+                                 }
+ 
+-                                UDB0 ("[EC0._DSM] - dGPU PCIe linking\n")
++                                Printf ("[EC0._DSM] - dGPU PCIe linking\n")
+                                 ^^^^RP05.HGON ()
+                                 Sleep (0x64)
+                                 SWSM = 0xEE
+@@ -16426,7 +16394,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             CreateByteField (SBUF, 0x0C, CMD)
+             Method (SCMD, 1, NotSerialized)
+             {
+-                UDB1 ("SAM Command Method - Cmd = %0\n", Arg0)
++                Printf ("SAM Command Method - Cmd = %o\n", Arg0)
+                 If ((SSBR != Zero))
+                 {
+                     CMD = Arg0
+@@ -17712,7 +17680,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                     Return (MGPS (Arg0, Arg1, Arg2, Arg3))
+                 }
+ 
+-                UDB0 ("HG -- _DSM MGPS - NV_ERROR_UNSUPPORTED\n")
++                Printf ("HG -- _DSM MGPS - NV_ERROR_UNSUPPORTED\n")
+                 Return (0x80000002)
+             }
+ 
+@@ -17728,7 +17696,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                     Return (MOPT (Arg0, Arg1, Arg2, Arg3))
+                 }
+ 
+-                UDB0 ("HG -- _DSM MOPT - NV_ERROR_UNSUPPORTED\n")
++                Printf ("HG -- _DSM MOPT - NV_ERROR_UNSUPPORTED\n")
+                 Return (0x80000002)
+             }
+ 
+@@ -17897,7 +17865,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 }
+                 Case (0x03)
+                 {
+-                    UDB0 ("HG -- GC6 DSM -- JT_FUNC_POWERCONTROL\n")
++                    Printf ("HG -- GC6 DSM -- JT_FUNC_POWERCONTROL\n")
+                     CreateField (Arg3, Zero, 0x03, GUPC)
+                     CreateField (Arg3, 0x04, One, PLPC)
+                     CreateField (Arg3, 0x0E, 0x02, DFGC)
+@@ -18117,7 +18085,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 {
+                     If ((TDGC == One))
+                     {
+-                        UDB0 ("[RP5 _ON] Defered\n")
++                        Printf ("[RP5 _ON] Defered\n")
+                         If ((DGCX == 0x03))
+                         {
+                             ^^PXSX.GC6D ()
+@@ -18128,7 +18096,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                     }
+                     Else
+                     {
+-                        UDB0 ("[RP5 _ON]\n")
++                        Printf ("[RP5 _ON]\n")
+                         HGON ()
+                     }
+                 }
+@@ -18141,7 +18109,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                     If ((TDGC == One))
+                     {
+                         CreateField (^^PXSX.TGPC, Zero, 0x03, GUPC)
+-                        UDB1 ("[RP5 _OFF] Defered - GUPC = %0X\n", GUPC)
++                        Printf ("[RP5 _OFF] Defered - GUPC = %oX\n", GUPC)
+                         If ((ToInteger (GUPC) == One))
+                         {
+                             ^^PXSX.GC6E ()
+@@ -18153,7 +18121,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                     }
+                     Else
+                     {
+-                        UDB0 ("[RP5 _OFF]\n")
++                        Printf ("[RP5 _OFF]\n")
+                         HGOF ()
+                     }
+                 }
+@@ -18174,10 +18142,10 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+         })
+         Method (HGON, 0, Serialized)
+         {
+-            UDB0 ("HGON\n")
++            Printf ("HGON\n")
+             If ((Zero != GLNK))
+             {
+-                UDB0 ("|- dGPU enabled, HGON returning without executing\n")
++                Printf ("|- dGPU enabled, HGON returning without executing\n")
+                 Return (Zero)
+             }
+ 
+@@ -18188,7 +18156,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             {
+                 If ((Local0 >= 0x1388))
+                 {
+-                    UDB0 ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
++                    Printf ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
+                     Return (Zero)
+                 }
+ 
+@@ -18196,7 +18164,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 Local0 += 0x0A
+             }
+ 
+-            UDB1 ("|- GPIO_GPU_PWR_STATE Time delay = %0X\n", Local0)
++            Printf ("|- GPIO_GPU_PWR_STATE Time delay = %oX\n", Local0)
+             PCRA (0xDC, 0x100C, 0xFFFFFFFFFFFFFFEF)
+             Sleep (One)
+             SGOV (0x0202000C, One)
+@@ -18209,7 +18177,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             {
+                 If ((Local0 > 0x80))
+                 {
+-                    UDB0 ("|- ## ERROR L23R ##\n")
++                    Printf ("|- ## ERROR L23R ##\n")
+                     Return (Zero)
+                 }
+ 
+@@ -18217,14 +18185,14 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 Local0 += 0x10
+             }
+ 
+-            UDB1 ("|- L23R wait time = %0X\n", Local0)
++            Printf ("|- L23R wait time = %oX\n", Local0)
+             DPGE = One
+             Local0 = Zero
+             While ((LASX == Zero))
+             {
+                 If ((Local0 > 0x0100))
+                 {
+-                    UDB0 ("|- ## ERROR LASX ##\n")
++                    Printf ("|- ## ERROR LASX ##\n")
+                     Return (Zero)
+                 }
+ 
+@@ -18232,7 +18200,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 Local0 += 0x10
+             }
+ 
+-            UDB1 ("|- LASX wait time = %0X\n", Local0)
++            Printf ("|- LASX wait time = %oX\n", Local0)
+             LEDM = Zero
+             REGR ()
+             GLNK = One
+@@ -18240,7 +18208,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+ 
+         Method (HGOF, 0, Serialized)
+         {
+-            UDB0 ("HGOF\n")
++            Printf ("HGOF\n")
+             REGS ()
+             GLNK = Zero
+             L23E = One
+@@ -18250,7 +18218,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             {
+                 If ((Local0 > 0x04))
+                 {
+-                    UDB0 ("|- ## ERROR L23E ##\n")
++                    Printf ("|- ## ERROR L23E ##\n")
+                     Break
+                 }
+ 
+@@ -18268,7 +18236,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             {
+                 If ((Local0 >= 0x1388))
+                 {
+-                    UDB0 ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
++                    Printf ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
+                     Return (Zero)
+                 }
+ 
+@@ -18277,7 +18245,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             }
+ 
+             Sleep (0x10)
+-            UDB1 ("|- GPIO_GPU_PWR_STATE Time delay = %0X\n", Local0)
++            Printf ("|- GPIO_GPU_PWR_STATE Time delay = %oX\n", Local0)
+             LDIS = One
+             LDIS = Zero
+             RLNK = One
+@@ -18316,12 +18284,12 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 Sleep (One)
+                 If ((Local0 == 0x03E8))
+                 {
+-                    UDB0 ("|- ERROR : Wait for GC6_FB_EN Timeout\n")
++                    Printf ("|- ERROR : Wait for GC6_FB_EN Timeout\n")
+                     Return (Zero)
+                 }
+             }
+ 
+-            UDB1 ("|- Wait for GC6_FB_EN Wait-time = %0X\n", Local0)
++            Printf ("|- Wait for GC6_FB_EN Wait-time = %oX\n", Local0)
+             Return (One)
+         }
+ 
+@@ -18334,12 +18302,12 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 Sleep (One)
+                 If ((0x01F4 == Local0))
+                 {
+-                    UDB0 ("|- ERROR : Link Enable Timeout\n")
++                    Printf ("|- ERROR : Link Enable Timeout\n")
+                     Return (Zero)
+                 }
+             }
+ 
+-            UDB1 ("|- Link Enable Wait-time = %0X mS\n", Local0)
++            Printf ("|- Link Enable Wait-time = %oX mS\n", Local0)
+         }
+ 
+         Method (WPLD, 0, Serialized)
+@@ -18351,20 +18319,20 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                 Sleep (One)
+                 If ((0x01F4 == Local0))
+                 {
+-                    UDB0 ("|- ERROR : Link Disable Timeout\n")
++                    Printf ("|- ERROR : Link Disable Timeout\n")
+                     Return (Zero)
+                 }
+             }
+ 
+-            UDB1 ("|- Link Disable Wait-time = %0X mS\n", Local0)
++            Printf ("|- Link Disable Wait-time = %oX mS\n", Local0)
+         }
+ 
+         Method (GC6E, 0, Serialized)
+         {
+-            UDB0 ("|- [GC6 Enable]\n")
++            Printf ("|- [GC6 Enable]\n")
+             If ((GC6M != Zero))
+             {
+-                UDB0 ("|- ERROR : Current state of GC6 is not disabled\n")
++                Printf ("|- ERROR : Current state of GC6 is not disabled\n")
+             }
+             ElseIf ((WGFE (Zero) == One))
+             {
+@@ -18377,10 +18345,10 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+ 
+         Method (GC6D, 0, Serialized)
+         {
+-            UDB0 ("|- [GC6 Disable]\n")
++            Printf ("|- [GC6 Disable]\n")
+             If ((GC6M != One))
+             {
+-                UDB0 ("|- ERROR : Current state of GC6 is not enabled\n")
++                Printf ("|- ERROR : Current state of GC6 is not enabled\n")
+             }
+             ElseIf ((WGFE (One) == One))
+             {
+@@ -19955,7 +19923,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+ 
+         Method (_L61, 0, NotSerialized)  // _Lxx: Level-Triggered GPE, xx=0x00-0xFF
+         {
+-            UDB4 ("_L61 RP05; PDC:%0; PDS:%1; LLSC:%2; HPSS:%3\n", \_SB.PCI0.RP05.PDC, \_SB.PCI0.RP05.PDS, \_SB.PCI0.RP05.LLSC, \_SB.PCI0.RP05.HPSS)
++            Printf ("_L61 RP05; PDC:%o; PDS:%o; LLSC:%o; HPSS:%o\n", \_SB.PCI0.RP05.PDC, \_SB.PCI0.RP05.PDS, \_SB.PCI0.RP05.LLSC, \_SB.PCI0.RP05.HPSS)
+             L01C += One
+             P8XH (Zero, One)
+             P8XH (One, L01C)
+-- 
+2.21.0
+

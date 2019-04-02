@@ -1,0 +1,109 @@
+From 8fc08bd896f011b5230a666934d9e7327c13c02e Mon Sep 17 00:00:00 2001
+From: "Hayataka@kitakar5525" <34676735+kitakar5525@users.noreply.github.com>
+Date: Wed, 3 Apr 2019 01:08:44 +0900
+Subject: [PATCH 4/4] Add DCMD: dirty hack to send commands to SAM manually
+
+---
+ dsdt.dsl | 54 +++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 49 insertions(+), 5 deletions(-)
+
+diff --git a/dsdt.dsl b/dsdt.dsl
+index c478709..c131f1f 100644
+--- a/dsdt.dsl
++++ b/dsdt.dsl
+@@ -164,6 +164,45 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+         Printf ("%o", ToInteger (Arg0))
+     }
+ 
++    /* 
++    * Dirty CoMmanD: Replace I2C0.SAM.SCMD (0x0?)
++    * 
++    * Print the command you need to run on terminal and Sleep() for a while.
++    * You need to run the printed command manually on terminal while Sleep()-ing.
++    * 0x2710 == 10 sec
++    * 
++    * @Arg0: Command ID in like 05
++    * Example: \DCMD (05)
++    * 
++    * FIXME How to use argument like "\DCMD (0x05)"?
++    * FIXME How to print an argument like "0x04"?, so I use Switch statement for now...
++    * FIXME How to convert hex to Decimal number?
++    * FIXME Really sleeping for 10 sec? I don't think so
++    */
++    Method (DCMD, 1, Serialized)
++    {
++        Switch (ToInteger (Arg0))
++        {
++            Case (0x04)
++            {
++                Printf ("Run \"scmd 0x04\" within 10 sec")
++            }
++            Case (0x05)
++            {
++                Printf ("Run \"scmd 0x05\" within 10 sec")
++            }
++            Case (0x06)
++            {
++                Printf ("Run \"scmd 0x06\" within 10 sec")
++            }
++            Case (0x07)
++            {
++                Printf ("Run \"scmd 0x07\" within 10 sec")
++            }
++        }
++        Sleep (0x2710)
++    }
++
+     Name (SS1, Zero)
+     Name (SS2, Zero)
+     Name (SS3, Zero)
+@@ -15885,7 +15924,8 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                                 If ((GGIV (0x02010015) == Zero))
+                                 {
+                                     Printf ("[EC0._DSM] - Base attached, powering dGPU\n")
+-                                    ^^^^I2C0.SAM.SCMD (0x05)
++                                    // ^^^^I2C0.SAM.SCMD (0x05)
++                                    \DCMD (05)
+                                     Return (Buffer (0x04)
+                                     {
+                                          0x00, 0x00, 0x00, 0x00                           // ....
+@@ -17993,12 +18033,14 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+                         If ((ToInteger (APPC) == Zero))
+                         {
+                             ADBG ("Send Apps not present cmd")
+-                            ^^^I2C0.SAM.SCMD (0x07)
++                            // ^^^I2C0.SAM.SCMD (0x07)
++                            \DCMD (07)
+                         }
+                         Else
+                         {
+                             ADBG ("Send Apps present cmd")
+-                            ^^^I2C0.SAM.SCMD (0x06)
++                            // ^^^I2C0.SAM.SCMD (0x06)
++                            \DCMD (06)
+                         }
+                     }
+ 
+@@ -18160,7 +18202,8 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             }
+ 
+             GLNK = Zero
+-            ^^I2C0.SAM.SCMD (0x05)
++            // ^^I2C0.SAM.SCMD (0x05)
++            \DCMD (05)
+             Local0 = Zero
+             While ((GGIV (0x02010015) == Zero))
+             {
+@@ -18240,7 +18283,8 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+             SGOV (0x0202000C, Zero)
+             PCRO (0xDC, 0x100C, 0x10)
+             Sleep (0x10)
+-            ^^I2C0.SAM.SCMD (0x04)
++            // ^^I2C0.SAM.SCMD (0x04)
++            \DCMD (04)
+             Local0 = Zero
+             While ((GGIV (0x02010015) == One))
+             {
+-- 
+2.21.0
+

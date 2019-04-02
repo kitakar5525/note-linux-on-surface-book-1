@@ -1,0 +1,33 @@
+From cd0b02657b34c9aca7f234cccbb0c56c5be4de40 Mon Sep 17 00:00:00 2001
+From: "Hayataka@kitakar5525" <34676735+kitakar5525@users.noreply.github.com>
+Date: Wed, 3 Apr 2019 01:05:06 +0900
+Subject: [PATCH 3/4] Add test methods
+
+---
+ dsdt.dsl | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/dsdt.dsl b/dsdt.dsl
+index e47d9ae..c478709 100644
+--- a/dsdt.dsl
++++ b/dsdt.dsl
+@@ -154,6 +154,16 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
+     External (SGMD, UnknownObj)
+     External (XBAS, UnknownObj)
+ 
++    Method (UUID, 0, Serialized)
++    {
++        Printf ("ToUUID (6fd05c69-cde3-49f4-95ed-ab1665498035): %o", ToUUID ("6fd05c69-cde3-49f4-95ed-ab1665498035"))
++    }
++
++    Method (TEST, 1, Serialized)
++    {
++        Printf ("%o", ToInteger (Arg0))
++    }
++
+     Name (SS1, Zero)
+     Name (SS2, Zero)
+     Name (SS3, Zero)
+-- 
+2.21.0
+
