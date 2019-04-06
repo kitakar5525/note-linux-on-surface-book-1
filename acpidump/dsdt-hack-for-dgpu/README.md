@@ -37,6 +37,12 @@ sudo modprobe i2c-dev
 #                                       0xAB 0x16 0x65 0x49 0x80 0x35} 1 1 0"
 acall(){ echo "$1" | sudo tee /proc/acpi/call >/dev/null && sudo cat /proc/acpi/call;echo;}
 
+# UUID to call dGPU related commands on `\_SB_.PCI0.LPCB.EC0_.VGBI._DSM ()`
+# ToUUID ("6fd05c69-cde3-49f4-95ed-ab1665498035")
+VGBI_UUID_DGPU="{0x69 0x5C 0xD0 0x6F 0xE3 0xCD 0xF4 0x49 0x95 0xED 0xAB 0x16 0x65 0x49 0x80 0x35}"
+# Wrapper to call dGPU related commands on `\_SB_.PCI0.LPCB.EC0_.VGBI._DSM ()`
+acall_vgbi_dgpu(){ acall "\_SB_.PCI0.LPCB.EC0_.VGBI._DSM $VGBI_UUID_DGPU 1 1 0";}
+
 # scmd(): Wrapper of i2cset
 # @$1: Command ID
 # 
@@ -57,7 +63,7 @@ scmd(){
 
 ```bash
 # acall "\_SB.PCI0.RP05.HGON"
-acall "\_SB_.PCI0.LPCB.EC0_.VGBI._DSM {0x69 0x5C 0xD0 0x6F 0xE3 0xCD 0xF4 0x49 0x95 0xED 0xAB 0x16 0x65 0x49 0x80 0x35} 1 1 0"
+acall_vgbi_dgpu
 
 # on another terminal
 scmd 0x05
