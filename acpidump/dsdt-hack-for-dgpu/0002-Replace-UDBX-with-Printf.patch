@@ -1,6 +1,6 @@
-From 5863bfa91c5345eab1547022d72628afe20d0cca Mon Sep 17 00:00:00 2001
+From 552edab4ccf153f96a4d3a9620e990cdf7e2ef21 Mon Sep 17 00:00:00 2001
 From: "Hayataka@kitakar5525" <34676735+kitakar5525@users.noreply.github.com>
-Date: Wed, 3 Apr 2019 01:04:02 +0900
+Date: Sat, 6 Apr 2019 21:05:18 +0900
 Subject: [PATCH 2/4] Replace UDBX with Printf
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH 2/4] Replace UDBX with Printf
  1 file changed, 35 insertions(+), 67 deletions(-)
 
 diff --git a/dsdt.dsl b/dsdt.dsl
-index 50676c8..e47d9ae 100644
+index 50676c8..5cb112f 100644
 --- a/dsdt.dsl
 +++ b/dsdt.dsl
 @@ -154,38 +154,6 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000001)
@@ -55,7 +55,7 @@ index 50676c8..e47d9ae 100644
                                  If ((GGIV (0x0202000D) == Zero))
                                  {
 -                                    UDB0 ("[EC0._DSM] - Base detached\n")
-+                                    Printf ("[EC0._DSM] - Base detached\n")
++                                    Printf ("[EC0._DSM] - Base detached")
                                      SGOV (0x0202000C, Zero)
                                      ^^^^RP05.TDGC = Zero
                                      ^^^^RP05.DGCX = Zero
@@ -64,7 +64,7 @@ index 50676c8..e47d9ae 100644
                                  If ((One == ^^^^RP05.ATCH))
                                  {
 -                                    UDB0 ("[EC0._DSM] - Recognized D3Cold\n")
-+                                    Printf ("[EC0._DSM] - Recognized D3Cold\n")
++                                    Printf ("[EC0._DSM] - Recognized D3Cold")
                                      Return (Buffer (0x04)
                                      {
                                           0x00, 0x00, 0x00, 0x00                           // ....
@@ -73,7 +73,7 @@ index 50676c8..e47d9ae 100644
                                  If ((GGIV (0x02010015) == Zero))
                                  {
 -                                    UDB0 ("[EC0._DSM] - Base attached, powering dGPU\n")
-+                                    Printf ("[EC0._DSM] - Base attached, powering dGPU\n")
++                                    Printf ("[EC0._DSM] - Base attached, powering dGPU")
                                      ^^^^I2C0.SAM.SCMD (0x05)
                                      Return (Buffer (0x04)
                                      {
@@ -82,7 +82,7 @@ index 50676c8..e47d9ae 100644
                                  }
  
 -                                UDB0 ("[EC0._DSM] - dGPU PCIe linking\n")
-+                                Printf ("[EC0._DSM] - dGPU PCIe linking\n")
++                                Printf ("[EC0._DSM] - dGPU PCIe linking")
                                  ^^^^RP05.HGON ()
                                  Sleep (0x64)
                                  SWSM = 0xEE
@@ -91,7 +91,7 @@ index 50676c8..e47d9ae 100644
              Method (SCMD, 1, NotSerialized)
              {
 -                UDB1 ("SAM Command Method - Cmd = %0\n", Arg0)
-+                Printf ("SAM Command Method - Cmd = %o\n", Arg0)
++                Printf ("SAM Command Method - Cmd = %o", Arg0)
                  If ((SSBR != Zero))
                  {
                      CMD = Arg0
@@ -100,7 +100,7 @@ index 50676c8..e47d9ae 100644
                  }
  
 -                UDB0 ("HG -- _DSM MGPS - NV_ERROR_UNSUPPORTED\n")
-+                Printf ("HG -- _DSM MGPS - NV_ERROR_UNSUPPORTED\n")
++                Printf ("HG -- _DSM MGPS - NV_ERROR_UNSUPPORTED")
                  Return (0x80000002)
              }
  
@@ -109,7 +109,7 @@ index 50676c8..e47d9ae 100644
                  }
  
 -                UDB0 ("HG -- _DSM MOPT - NV_ERROR_UNSUPPORTED\n")
-+                Printf ("HG -- _DSM MOPT - NV_ERROR_UNSUPPORTED\n")
++                Printf ("HG -- _DSM MOPT - NV_ERROR_UNSUPPORTED")
                  Return (0x80000002)
              }
  
@@ -118,7 +118,7 @@ index 50676c8..e47d9ae 100644
                  Case (0x03)
                  {
 -                    UDB0 ("HG -- GC6 DSM -- JT_FUNC_POWERCONTROL\n")
-+                    Printf ("HG -- GC6 DSM -- JT_FUNC_POWERCONTROL\n")
++                    Printf ("HG -- GC6 DSM -- JT_FUNC_POWERCONTROL")
                      CreateField (Arg3, Zero, 0x03, GUPC)
                      CreateField (Arg3, 0x04, One, PLPC)
                      CreateField (Arg3, 0x0E, 0x02, DFGC)
@@ -127,7 +127,7 @@ index 50676c8..e47d9ae 100644
                      If ((TDGC == One))
                      {
 -                        UDB0 ("[RP5 _ON] Defered\n")
-+                        Printf ("[RP5 _ON] Defered\n")
++                        Printf ("[RP5 _ON] Defered")
                          If ((DGCX == 0x03))
                          {
                              ^^PXSX.GC6D ()
@@ -136,7 +136,7 @@ index 50676c8..e47d9ae 100644
                      Else
                      {
 -                        UDB0 ("[RP5 _ON]\n")
-+                        Printf ("[RP5 _ON]\n")
++                        Printf ("[RP5 _ON]")
                          HGON ()
                      }
                  }
@@ -145,7 +145,7 @@ index 50676c8..e47d9ae 100644
                      {
                          CreateField (^^PXSX.TGPC, Zero, 0x03, GUPC)
 -                        UDB1 ("[RP5 _OFF] Defered - GUPC = %0X\n", GUPC)
-+                        Printf ("[RP5 _OFF] Defered - GUPC = %oX\n", GUPC)
++                        Printf ("[RP5 _OFF] Defered - GUPC = %oX", GUPC)
                          If ((ToInteger (GUPC) == One))
                          {
                              ^^PXSX.GC6E ()
@@ -154,7 +154,7 @@ index 50676c8..e47d9ae 100644
                      Else
                      {
 -                        UDB0 ("[RP5 _OFF]\n")
-+                        Printf ("[RP5 _OFF]\n")
++                        Printf ("[RP5 _OFF]")
                          HGOF ()
                      }
                  }
@@ -163,11 +163,11 @@ index 50676c8..e47d9ae 100644
          Method (HGON, 0, Serialized)
          {
 -            UDB0 ("HGON\n")
-+            Printf ("HGON\n")
++            Printf ("HGON")
              If ((Zero != GLNK))
              {
 -                UDB0 ("|- dGPU enabled, HGON returning without executing\n")
-+                Printf ("|- dGPU enabled, HGON returning without executing\n")
++                Printf ("|- dGPU enabled, HGON returning without executing")
                  Return (Zero)
              }
  
@@ -176,7 +176,7 @@ index 50676c8..e47d9ae 100644
                  If ((Local0 >= 0x1388))
                  {
 -                    UDB0 ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
-+                    Printf ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
++                    Printf ("|- ERROR: GPIO_GPU_PWR_STATE Timeout")
                      Return (Zero)
                  }
  
@@ -185,7 +185,7 @@ index 50676c8..e47d9ae 100644
              }
  
 -            UDB1 ("|- GPIO_GPU_PWR_STATE Time delay = %0X\n", Local0)
-+            Printf ("|- GPIO_GPU_PWR_STATE Time delay = %oX\n", Local0)
++            Printf ("|- GPIO_GPU_PWR_STATE Time delay = %oX", Local0)
              PCRA (0xDC, 0x100C, 0xFFFFFFFFFFFFFFEF)
              Sleep (One)
              SGOV (0x0202000C, One)
@@ -194,7 +194,7 @@ index 50676c8..e47d9ae 100644
                  If ((Local0 > 0x80))
                  {
 -                    UDB0 ("|- ## ERROR L23R ##\n")
-+                    Printf ("|- ## ERROR L23R ##\n")
++                    Printf ("|- ## ERROR L23R ##")
                      Return (Zero)
                  }
  
@@ -203,7 +203,7 @@ index 50676c8..e47d9ae 100644
              }
  
 -            UDB1 ("|- L23R wait time = %0X\n", Local0)
-+            Printf ("|- L23R wait time = %oX\n", Local0)
++            Printf ("|- L23R wait time = %oX", Local0)
              DPGE = One
              Local0 = Zero
              While ((LASX == Zero))
@@ -211,7 +211,7 @@ index 50676c8..e47d9ae 100644
                  If ((Local0 > 0x0100))
                  {
 -                    UDB0 ("|- ## ERROR LASX ##\n")
-+                    Printf ("|- ## ERROR LASX ##\n")
++                    Printf ("|- ## ERROR LASX ##")
                      Return (Zero)
                  }
  
@@ -220,7 +220,7 @@ index 50676c8..e47d9ae 100644
              }
  
 -            UDB1 ("|- LASX wait time = %0X\n", Local0)
-+            Printf ("|- LASX wait time = %oX\n", Local0)
++            Printf ("|- LASX wait time = %oX", Local0)
              LEDM = Zero
              REGR ()
              GLNK = One
@@ -229,7 +229,7 @@ index 50676c8..e47d9ae 100644
          Method (HGOF, 0, Serialized)
          {
 -            UDB0 ("HGOF\n")
-+            Printf ("HGOF\n")
++            Printf ("HGOF")
              REGS ()
              GLNK = Zero
              L23E = One
@@ -238,7 +238,7 @@ index 50676c8..e47d9ae 100644
                  If ((Local0 > 0x04))
                  {
 -                    UDB0 ("|- ## ERROR L23E ##\n")
-+                    Printf ("|- ## ERROR L23E ##\n")
++                    Printf ("|- ## ERROR L23E ##")
                      Break
                  }
  
@@ -247,7 +247,7 @@ index 50676c8..e47d9ae 100644
                  If ((Local0 >= 0x1388))
                  {
 -                    UDB0 ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
-+                    Printf ("|- ERROR: GPIO_GPU_PWR_STATE Timeout\n")
++                    Printf ("|- ERROR: GPIO_GPU_PWR_STATE Timeout")
                      Return (Zero)
                  }
  
@@ -256,7 +256,7 @@ index 50676c8..e47d9ae 100644
  
              Sleep (0x10)
 -            UDB1 ("|- GPIO_GPU_PWR_STATE Time delay = %0X\n", Local0)
-+            Printf ("|- GPIO_GPU_PWR_STATE Time delay = %oX\n", Local0)
++            Printf ("|- GPIO_GPU_PWR_STATE Time delay = %oX", Local0)
              LDIS = One
              LDIS = Zero
              RLNK = One
@@ -265,13 +265,13 @@ index 50676c8..e47d9ae 100644
                  If ((Local0 == 0x03E8))
                  {
 -                    UDB0 ("|- ERROR : Wait for GC6_FB_EN Timeout\n")
-+                    Printf ("|- ERROR : Wait for GC6_FB_EN Timeout\n")
++                    Printf ("|- ERROR : Wait for GC6_FB_EN Timeout")
                      Return (Zero)
                  }
              }
  
 -            UDB1 ("|- Wait for GC6_FB_EN Wait-time = %0X\n", Local0)
-+            Printf ("|- Wait for GC6_FB_EN Wait-time = %oX\n", Local0)
++            Printf ("|- Wait for GC6_FB_EN Wait-time = %oX", Local0)
              Return (One)
          }
  
@@ -280,13 +280,13 @@ index 50676c8..e47d9ae 100644
                  If ((0x01F4 == Local0))
                  {
 -                    UDB0 ("|- ERROR : Link Enable Timeout\n")
-+                    Printf ("|- ERROR : Link Enable Timeout\n")
++                    Printf ("|- ERROR : Link Enable Timeout")
                      Return (Zero)
                  }
              }
  
 -            UDB1 ("|- Link Enable Wait-time = %0X mS\n", Local0)
-+            Printf ("|- Link Enable Wait-time = %oX mS\n", Local0)
++            Printf ("|- Link Enable Wait-time = %oX mS", Local0)
          }
  
          Method (WPLD, 0, Serialized)
@@ -295,23 +295,23 @@ index 50676c8..e47d9ae 100644
                  If ((0x01F4 == Local0))
                  {
 -                    UDB0 ("|- ERROR : Link Disable Timeout\n")
-+                    Printf ("|- ERROR : Link Disable Timeout\n")
++                    Printf ("|- ERROR : Link Disable Timeout")
                      Return (Zero)
                  }
              }
  
 -            UDB1 ("|- Link Disable Wait-time = %0X mS\n", Local0)
-+            Printf ("|- Link Disable Wait-time = %oX mS\n", Local0)
++            Printf ("|- Link Disable Wait-time = %oX mS", Local0)
          }
  
          Method (GC6E, 0, Serialized)
          {
 -            UDB0 ("|- [GC6 Enable]\n")
-+            Printf ("|- [GC6 Enable]\n")
++            Printf ("|- [GC6 Enable]")
              If ((GC6M != Zero))
              {
 -                UDB0 ("|- ERROR : Current state of GC6 is not disabled\n")
-+                Printf ("|- ERROR : Current state of GC6 is not disabled\n")
++                Printf ("|- ERROR : Current state of GC6 is not disabled")
              }
              ElseIf ((WGFE (Zero) == One))
              {
@@ -320,11 +320,11 @@ index 50676c8..e47d9ae 100644
          Method (GC6D, 0, Serialized)
          {
 -            UDB0 ("|- [GC6 Disable]\n")
-+            Printf ("|- [GC6 Disable]\n")
++            Printf ("|- [GC6 Disable]")
              If ((GC6M != One))
              {
 -                UDB0 ("|- ERROR : Current state of GC6 is not enabled\n")
-+                Printf ("|- ERROR : Current state of GC6 is not enabled\n")
++                Printf ("|- ERROR : Current state of GC6 is not enabled")
              }
              ElseIf ((WGFE (One) == One))
              {
@@ -333,7 +333,7 @@ index 50676c8..e47d9ae 100644
          Method (_L61, 0, NotSerialized)  // _Lxx: Level-Triggered GPE, xx=0x00-0xFF
          {
 -            UDB4 ("_L61 RP05; PDC:%0; PDS:%1; LLSC:%2; HPSS:%3\n", \_SB.PCI0.RP05.PDC, \_SB.PCI0.RP05.PDS, \_SB.PCI0.RP05.LLSC, \_SB.PCI0.RP05.HPSS)
-+            Printf ("_L61 RP05; PDC:%o; PDS:%o; LLSC:%o; HPSS:%o\n", \_SB.PCI0.RP05.PDC, \_SB.PCI0.RP05.PDS, \_SB.PCI0.RP05.LLSC, \_SB.PCI0.RP05.HPSS)
++            Printf ("_L61 RP05; PDC:%o; PDS:%o; LLSC:%o; HPSS:%o", \_SB.PCI0.RP05.PDC, \_SB.PCI0.RP05.PDS, \_SB.PCI0.RP05.LLSC, \_SB.PCI0.RP05.HPSS)
              L01C += One
              P8XH (Zero, One)
              P8XH (One, L01C)
