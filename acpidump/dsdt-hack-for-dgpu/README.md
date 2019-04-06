@@ -62,8 +62,9 @@ scmd(){
 ## Enable dGPU
 
 ```bash
-# acall "\_SB.PCI0.RP05.HGON"
-acall_vgbi_dgpu
+acall "\_SB.PCI0.RP05.HGON"
+# Or,
+# acall_vgbi_dgpu
 
 # on another terminal
 scmd 0x05
