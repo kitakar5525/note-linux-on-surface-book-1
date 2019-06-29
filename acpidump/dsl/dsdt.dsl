@@ -1,15 +1,13 @@
-Firmware Error (ACPI): Could not resolve symbol [^GFX0.CLID], AE_NOT_FOUND (20190215/dswload-496)
-Firmware Error (ACPI): Could not resolve symbol [^GFX0.CLID], AE_NOT_FOUND (20190215/dswload2-477)
-Firmware Error (ACPI): Could not resolve symbol [^GFX0.CLID], AE_NOT_FOUND (20190215/dswload-496)
-Firmware Error (ACPI): Could not resolve symbol [^GFX0.CLID], AE_NOT_FOUND (20190215/dswload2-477)
+Firmware Error (ACPI): Could not resolve symbol [^GFX0.CLID], AE_NOT_FOUND (20190509/dswload-496)
+Firmware Error (ACPI): Could not resolve symbol [^GFX0.CLID], AE_NOT_FOUND (20190509/dswload2-477)
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190215 (64-bit version)
+ * AML/ASL+ Disassembler version 20190509 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of dsdt.dat, Wed Mar 27 22:23:23 2019
+ * Disassembly of dsdt.dat, Sun Jun 30 02:07:57 2019
  *
  * Original Table Header:
  *     Signature        "DSDT"
@@ -46,7 +44,6 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
     External (_PR_.PDTS, UnknownObj)
     External (_PR_.PKGA, UnknownObj)
     External (_PR_.PR00, DeviceObj)
-    External (_PR_.PR00._PPC, MethodObj)    // 0 Arguments
     External (_PR_.PR00._PSS, MethodObj)    // 0 Arguments
     External (_PR_.PR00.LPSS, PkgObj)
     External (_PR_.PR00.TPSS, PkgObj)
@@ -57,7 +54,7 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
     External (_SB_.PCI0.GFX0.ALSI, UnknownObj)
     External (_SB_.PCI0.GFX0.CBLV, UnknownObj)
     External (_SB_.PCI0.GFX0.CDCK, UnknownObj)
-    External (_SB_.PCI0.GFX0.CLID, FieldUnitObj)
+    External (_SB_.PCI0.GFX0.CLID, UnknownObj)
     External (_SB_.PCI0.GFX0.DD1F, DeviceObj)
     External (_SB_.PCI0.GFX0.GLID, MethodObj)    // 1 Arguments
     External (_SB_.PCI0.GFX0.GSCI, MethodObj)    // 0 Arguments
@@ -82,9 +79,9 @@ DefinitionBlock ("", "DSDT", 2, "MSFT  ", "MSFT    ", 0x00000000)
     External (_SB_.PCI0.RP05.PWRG, UnknownObj)
     External (_SB_.PCI0.RP05.RSTG, UnknownObj)
     External (_SB_.PCI0.RP05.SCLK, UnknownObj)
-    External (_SB_.PCI0.RP09.PWRG, PkgObj)
-    External (_SB_.PCI0.RP09.RSTG, PkgObj)
-    External (_SB_.PCI0.RP09.SCLK, PkgObj)
+    External (_SB_.PCI0.RP09.PWRG, UnknownObj)
+    External (_SB_.PCI0.RP09.RSTG, UnknownObj)
+    External (_SB_.PCI0.RP09.SCLK, UnknownObj)
     External (_SB_.PCI0.RP13.PWRG, UnknownObj)
     External (_SB_.PCI0.RP13.RSTG, UnknownObj)
     External (_SB_.PCI0.RP13.SCLK, UnknownObj)

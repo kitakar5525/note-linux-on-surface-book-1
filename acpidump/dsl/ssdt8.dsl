@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190215 (64-bit version)
+ * AML/ASL+ Disassembler version 20190509 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt8.dat, Wed Mar 27 22:13:21 2019
+ * Disassembly of ssdt8.dat, Sun Jun 30 02:07:57 2019
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -20,6 +20,17 @@
  */
 DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
 {
+    External (_PR_.C3LT, FieldUnitObj)
+    External (_PR_.C3MW, FieldUnitObj)
+    External (_PR_.C6LT, FieldUnitObj)
+    External (_PR_.C6MW, FieldUnitObj)
+    External (_PR_.C7LT, FieldUnitObj)
+    External (_PR_.C7MW, FieldUnitObj)
+    External (_PR_.CDLT, FieldUnitObj)
+    External (_PR_.CDLV, FieldUnitObj)
+    External (_PR_.CDMW, FieldUnitObj)
+    External (_PR_.CDPW, FieldUnitObj)
+    External (_PR_.CFGD, UnknownObj)
     External (_PR_.PR00, DeviceObj)
     External (C3LT, UnknownObj)
     External (C3MW, UnknownObj)
@@ -169,12 +180,12 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
         {
             If (!CSTF)
             {
-                C3TM [0x02] = C3LT /* External reference */
-                C6TM [0x02] = C6LT /* External reference */
-                C7TM [0x02] = C7LT /* External reference */
-                CDTM [0x02] = CDLT /* External reference */
-                CDTM [0x03] = CDPW /* External reference */
-                DerefOf (CDTM [Zero]) [0x07] = CDLV /* External reference */
+                C3TM [0x02] = C3LT /* \_PR_.C3LT */
+                C6TM [0x02] = C6LT /* \_PR_.C6LT */
+                C7TM [0x02] = C7LT /* \_PR_.C7LT */
+                CDTM [0x02] = CDLT /* \_PR_.CDLT */
+                CDTM [0x03] = CDPW /* \_PR_.CDPW */
+                DerefOf (CDTM [Zero]) [0x07] = CDLV /* \_PR_.CDLV */
                 If (((CFGD & 0x0800) && (PC00 & 0x0200)))
                 {
                     C1TM [Zero] = MWES /* \_PR_.PR00.MWES */
@@ -182,10 +193,10 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
                     C6TM [Zero] = MWES /* \_PR_.PR00.MWES */
                     C7TM [Zero] = MWES /* \_PR_.PR00.MWES */
                     CDTM [Zero] = MWES /* \_PR_.PR00.MWES */
-                    DerefOf (C3TM [Zero]) [0x07] = C3MW /* External reference */
-                    DerefOf (C6TM [Zero]) [0x07] = C6MW /* External reference */
-                    DerefOf (C7TM [Zero]) [0x07] = C7MW /* External reference */
-                    DerefOf (CDTM [Zero]) [0x07] = CDMW /* External reference */
+                    DerefOf (C3TM [Zero]) [0x07] = C3MW /* \_PR_.C3MW */
+                    DerefOf (C6TM [Zero]) [0x07] = C6MW /* \_PR_.C6MW */
+                    DerefOf (C7TM [Zero]) [0x07] = C7MW /* \_PR_.C7MW */
+                    DerefOf (CDTM [Zero]) [0x07] = CDMW /* \_PR_.CDMW */
                 }
                 ElseIf (((CFGD & 0x0800) && (PC00 & 0x0100)))
                 {

@@ -1,9 +1,9 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190215 (64-bit version)
+ * AML/ASL+ Disassembler version 20190509 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
- * Disassembly of apic.dat, Wed Mar 27 22:13:21 2019
+ * Disassembly of apic.dat, Sun Jun 30 02:07:57 2019
  *
  * ACPI Data Table [APIC]
  *

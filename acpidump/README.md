@@ -8,6 +8,11 @@ sudo acpidump > acpidump.dat
 acpixtract -a acpidump.dat
 ```
 
+- move `acpidump.dat` to another location
+```
+mv acpidump.dat ../
+```
+
 - disassemble the tables
 ```
 iasl -d *

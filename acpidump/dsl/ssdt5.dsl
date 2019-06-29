@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20190215 (64-bit version)
+ * AML/ASL+ Disassembler version 20190509 (64-bit version)
  * Copyright (c) 2000 - 2019 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of ssdt5.dat, Wed Mar 27 22:13:21 2019
+ * Disassembly of ssdt5.dat, Sun Jun 30 02:07:57 2019
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -121,7 +121,7 @@ DefinitionBlock ("", "SSDT", 2, "MSFT  ", "Tpm2Tabl", 0x00001000)
                     0xFED40000,         // Address Base
                     0x00005000,         // Address Length
                     )
-                Interrupt (ResourceConsumer, Level, ActiveLow, Shared, ,, _Y00)
+                Interrupt (ResourceConsumer, Level, ActiveLow, Shared, ,, _Y26)
                 {
                     0x0000000C,
                 }
@@ -141,7 +141,7 @@ DefinitionBlock ("", "SSDT", 2, "MSFT  ", "Tpm2Tabl", 0x00001000)
                 }
                 Else
                 {
-                    CreateDWordField (RES0, \_SB.TPM._Y00._INT, LIRQ)  // _INT: Interrupts
+                    CreateDWordField (RES0, \_SB.TPM._Y26._INT, LIRQ)  // _INT: Interrupts
                     LIRQ = IRQN /* \_SB_.TPM_.IRQN */
                     Return (RES0) /* \_SB_.TPM_.RES0 */
                 }
@@ -155,14 +155,14 @@ DefinitionBlock ("", "SSDT", 2, "MSFT  ", "Tpm2Tabl", 0x00001000)
                 }
 
                 CreateDWordField (Arg0, 0x11, IRQ0)
-                CreateDWordField (RES0, \_SB.TPM._Y00._INT, LIRQ)  // _INT: Interrupts
+                CreateDWordField (RES0, \_SB.TPM._Y26._INT, LIRQ)  // _INT: Interrupts
                 LIRQ = IRQ0 /* \_SB_.TPM_._SRS.IRQ0 */
                 IRQN = IRQ0 /* \_SB_.TPM_._SRS.IRQ0 */
                 CreateBitField (Arg0, 0x79, ITRG)
-                CreateBitField (RES0, \_SB.TPM._Y00._HE, LTRG)  // _HE_: High-Edge
+                CreateBitField (RES0, \_SB.TPM._Y26._HE, LTRG)  // _HE_: High-Edge
                 LTRG = ITRG /* \_SB_.TPM_._SRS.ITRG */
                 CreateBitField (Arg0, 0x7A, ILVL)
-                CreateBitField (RES0, \_SB.TPM._Y00._LL, LLVL)  // _LL_: Low Level
+                CreateBitField (RES0, \_SB.TPM._Y26._LL, LLVL)  // _LL_: Low Level
                 LLVL = ILVL /* \_SB_.TPM_._SRS.ILVL */
                 If ((((TID0 & 0x0F) == Zero) || ((TID0 & 0x0F
                     ) == 0x0F)))
